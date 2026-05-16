@@ -13,71 +13,238 @@
 
     body {
       margin: 0;
-      background: linear-gradient(135deg, #ffe6c7, #ffd6e8);
       min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, #fff3c4 0, transparent 35%),
+        radial-gradient(circle at bottom right, #ffd6e8 0, transparent 35%),
+        linear-gradient(135deg, #ffe6c7, #ffd6e8);
       display: flex;
       justify-content: center;
       align-items: center;
+      color: #4b2e18;
     }
 
     .game-container {
-      width: 980px;
-      max-width: 95%;
-      background: #fffaf4;
-      border-radius: 25px;
-      padding: 25px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      width: 1120px;
+      max-width: 96%;
+      background: rgba(255, 250, 244, 0.96);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.22);
+      border: 4px solid rgba(255, 255, 255, 0.7);
     }
 
     header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     header h1 {
       margin: 0;
       color: #7b3f00;
-      font-size: 36px;
+      font-size: 38px;
     }
 
     header p {
-      margin: 8px 0 0;
+      margin: 7px 0 0;
       color: #8b5e34;
       font-size: 16px;
     }
 
+    .top-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 17px;
+      padding: 12px;
+      text-align: center;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.09);
+      border: 2px solid #ffe0ad;
+    }
+
+    .stat-title {
+      font-size: 13px;
+      color: #8b5e34;
+      font-weight: bold;
+    }
+
+    .stat-value {
+      margin-top: 4px;
+      font-size: 21px;
+      color: #e76f51;
+      font-weight: bold;
+    }
+
+    .customers-top-box {
+      background: white;
+      border-radius: 20px;
+      padding: 14px;
+      margin-bottom: 16px;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+      border: 2px solid #f1c27d;
+    }
+
+    .customers-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .customers-title h2 {
+      margin: 0;
+      color: #7b3f00;
+      font-size: 22px;
+    }
+
+    .customers-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .customer-card {
+      background: #fff7ec;
+      border: 2px solid #f1c27d;
+      border-radius: 16px;
+      padding: 12px;
+      transition: 0.2s;
+      min-height: 130px;
+    }
+
+    .customer-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+    }
+
+    .customer-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #ffd6a5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 26px;
+      border: 2px solid white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+      flex-shrink: 0;
+    }
+
+    .customer-name {
+      font-weight: bold;
+      color: #5c3d2e;
+      font-size: 17px;
+    }
+
+    .customer-text {
+      color: #7b3f00;
+      font-size: 13px;
+      margin-top: 2px;
+    }
+
+    .order-item {
+      font-size: 16px;
+      color: #5c3d2e;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
     .main {
       display: flex;
-      gap: 25px;
+      gap: 22px;
       justify-content: space-between;
       align-items: flex-start;
     }
 
+    .left-area {
+      flex: 1;
+    }
+
+    .day-goal-box {
+      background: #fff;
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+      border: 2px solid #f1c27d;
+    }
+
+    .goal-row {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      color: #7b3f00;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 17px;
+      background: #ffe8c7;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid #e9b872;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #2a9d8f, #90be6d);
+      transition: 0.3s;
+    }
+
+    .board-wrap {
+      background: linear-gradient(145deg, #f6b66d, #e99552);
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.12);
+      position: relative;
+    }
+
+    .board-title {
+      text-align: center;
+      color: white;
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    }
+
     .board {
       display: grid;
-      grid-template-columns: repeat(4, 90px);
-      grid-template-rows: repeat(4, 90px);
-      gap: 12px;
-      background: #f5c38b;
-      padding: 15px;
-      border-radius: 20px;
+      grid-template-columns: repeat(5, 86px);
+      grid-template-rows: repeat(4, 86px);
+      gap: 11px;
+      justify-content: center;
     }
 
     .cell {
-      width: 90px;
-      height: 90px;
+      width: 86px;
+      height: 86px;
       background: #fff3df;
       border: 3px dashed #d99b5c;
       border-radius: 18px;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 42px;
+      font-size: 40px;
       cursor: pointer;
       transition: 0.2s;
       position: relative;
       text-align: center;
-      overflow: hidden;
+      overflow: visible;
     }
 
     .cell:hover {
@@ -94,6 +261,15 @@
     .cell.invalid-drop {
       border: 4px solid #e63946;
       background: #ffe0e0;
+      animation: wrongShake 0.25s ease;
+    }
+
+    @keyframes wrongShake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      50% { transform: translateX(4px); }
+      75% { transform: translateX(-3px); }
+      100% { transform: translateX(0); }
     }
 
     .generator {
@@ -101,12 +277,17 @@
       border: 4px solid #8b5e34;
       color: white;
       font-size: 34px;
-      box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+      box-shadow: 0 5px 12px rgba(0,0,0,0.23);
     }
 
     .generator:hover {
       background: linear-gradient(145deg, #ffc83d, #ff8c00);
       transform: scale(1.07);
+    }
+
+    .generator.machine-cooldown {
+      opacity: 0.55;
+      filter: grayscale(0.4);
     }
 
     .generator:active {
@@ -157,15 +338,9 @@
     }
 
     @keyframes glow {
-      0% {
-        box-shadow: 0 0 0 rgba(255, 183, 3, 0);
-      }
-      40% {
-        box-shadow: 0 0 25px rgba(255, 183, 3, 0.9);
-      }
-      100% {
-        box-shadow: 0 0 0 rgba(255, 183, 3, 0);
-      }
+      0% { box-shadow: 0 0 0 rgba(255, 183, 3, 0); }
+      40% { box-shadow: 0 0 28px rgba(255, 183, 3, 0.95); }
+      100% { box-shadow: 0 0 0 rgba(255, 183, 3, 0); }
     }
 
     .merge-effect {
@@ -173,23 +348,49 @@
     }
 
     @keyframes mergePop {
+      0% { transform: scale(0.7); opacity: 0.5; }
+      60% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+
+    .merge-check {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #2a9d8f;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+      animation: checkPop 0.75s ease-out;
+      z-index: 5;
+    }
+
+    @keyframes checkPop {
       0% {
-        transform: scale(0.7);
-        opacity: 0.5;
+        opacity: 0;
+        transform: scale(0.2) rotate(-25deg);
       }
-      60% {
-        transform: scale(1.3);
+      55% {
         opacity: 1;
+        transform: scale(1.25) rotate(8deg);
       }
       100% {
-        transform: scale(1);
+        opacity: 0;
+        transform: scale(1) rotate(0deg);
       }
     }
 
     .item-name {
       position: absolute;
       bottom: 5px;
-      font-size: 10px;
+      font-size: 9px;
       color: #6b3e1e;
       font-weight: bold;
       width: 100%;
@@ -199,84 +400,67 @@
     .generator-label {
       position: absolute;
       bottom: 5px;
-      font-size: 10px;
+      font-size: 9px;
       color: white;
       font-weight: bold;
       width: 100%;
       left: 0;
     }
 
-    .side-panel {
-      width: 360px;
-      background: #fff0d6;
-      padding: 20px;
-      border-radius: 20px;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.08);
+    .machine-info-button {
+      display: none;
+      margin: 14px auto 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: #577590;
+      color: white;
+      font-size: 21px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.22);
+      transition: 0.2s;
     }
 
-    .score-box, .customers-box, .info-box {
+    .machine-info-button.show {
+      display: block;
+      animation: infoPop 0.3s ease-out;
+    }
+
+    .machine-info-button:hover {
+      background: #40576b;
+      transform: scale(1.08);
+    }
+
+    @keyframes infoPop {
+      0% { opacity: 0; transform: scale(0.3); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .side-panel {
+      width: 345px;
+      background: #fff0d6;
+      padding: 18px;
+      border-radius: 22px;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.08);
+      border: 2px solid #ffe0ad;
+    }
+
+    .panel-box {
       background: white;
-      padding: 15px;
-      border-radius: 15px;
-      margin-bottom: 15px;
+      padding: 14px;
+      border-radius: 16px;
+      margin-bottom: 14px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      border: 1px solid #ffe2b8;
     }
 
     h2 {
       margin-top: 0;
+      margin-bottom: 10px;
       color: #7b3f00;
-      font-size: 22px;
-    }
-
-    .score {
-      font-size: 28px;
-      font-weight: bold;
-      color: #e76f51;
-    }
-
-    .customer-card {
-      background: #fff7ec;
-      border: 2px solid #f1c27d;
-      border-radius: 15px;
-      padding: 12px;
-      margin-bottom: 12px;
-    }
-
-    .customer-top {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-
-    .avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: #ffd6a5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 25px;
-    }
-
-    .customer-name {
-      font-weight: bold;
-      color: #5c3d2e;
-      font-size: 17px;
-    }
-
-    .customer-text {
-      color: #7b3f00;
-      font-size: 14px;
-      margin-top: 2px;
-    }
-
-    .order-item {
-      font-size: 17px;
-      color: #5c3d2e;
-      font-weight: bold;
-      margin: 8px 0;
+      font-size: 21px;
     }
 
     button {
@@ -297,88 +481,267 @@
       transform: scale(1.03);
     }
 
+    .upgrade-btn {
+      background: #577590;
+      margin-top: 8px;
+    }
+
+    .upgrade-btn:hover {
+      background: #40576b;
+    }
+
     .reset-btn {
       background: #b56576;
-      margin-top: 10px;
-      padding: 14px;
-      font-size: 16px;
+      margin-top: 8px;
+      padding: 12px;
+      font-size: 15px;
     }
 
     .reset-btn:hover {
       background: #944d5e;
     }
 
-    .message {
-      margin-top: 10px;
-      font-size: 14px;
+    .message-line {
+      text-align: center;
+      margin-top: 12px;
+      min-height: 24px;
       color: #7b3f00;
-      min-height: 20px;
       font-weight: bold;
+      font-size: 14px;
     }
 
     .level-list {
-      font-size: 14px;
+      font-size: 13px;
       line-height: 1.7;
       color: #5c3d2e;
     }
 
-    @media (max-width: 850px) {
+    .combo-pop {
+      position: fixed;
+      top: 22px;
+      right: 28px;
+      background: #e76f51;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-size: 22px;
+      font-weight: bold;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.6);
+      z-index: 20;
+    }
+
+    .combo-pop.show {
+      animation: comboShow 0.75s ease-out;
+    }
+
+    @keyframes comboShow {
+      0% { opacity: 0; transform: scale(0.6) translateY(-10px); }
+      35% { opacity: 1; transform: scale(1.15) translateY(0); }
+      100% { opacity: 0; transform: scale(1) translateY(-20px); }
+    }
+
+    .day-complete,
+    .info-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .day-card,
+    .info-card {
+      width: 390px;
+      max-width: 92%;
+      background: #fffaf4;
+      border-radius: 24px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+      border: 4px solid #ffd166;
+      animation: popIn 0.35s ease-out;
+    }
+
+    .day-card h2,
+    .info-card h2 {
+      font-size: 27px;
+      margin-bottom: 8px;
+    }
+
+    .machine-levels {
+      margin-top: 15px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .machine-level-card {
+      background: white;
+      border: 2px solid #f1c27d;
+      border-radius: 15px;
+      padding: 10px;
+      text-align: left;
+      font-size: 14px;
+      color: #5c3d2e;
+    }
+
+    .machine-level-card.active {
+      border-color: #2a9d8f;
+      background: #edfff9;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+    }
+
+    .close-btn {
+      background: #b56576;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 980px) {
       .main {
         flex-direction: column;
         align-items: center;
       }
 
+      .side-panel {
+        width: 100%;
+      }
+
+      .top-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .customers-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
       .board {
-        grid-template-columns: repeat(4, 70px);
-        grid-template-rows: repeat(4, 70px);
+        grid-template-columns: repeat(5, 62px);
+        grid-template-rows: repeat(4, 62px);
+        gap: 8px;
       }
 
       .cell {
-        width: 70px;
-        height: 70px;
-        font-size: 32px;
+        width: 62px;
+        height: 62px;
+        font-size: 28px;
       }
 
-      .side-panel {
-        width: 100%;
+      header h1 {
+        font-size: 28px;
+      }
+
+      .item-name, .generator-label {
+        font-size: 7px;
       }
     }
   </style>
 </head>
 
 <body>
+  <div class="combo-pop" id="comboPop">Combo x2!</div>
+
+  <div class="day-complete" id="dayComplete">
+    <div class="day-card">
+      <h2>🎉 Day Completed!</h2>
+      <p id="dayCompleteText">Great job!</p>
+      <button onclick="nextDay()">Start Next Day</button>
+    </div>
+  </div>
+
+  <div class="info-modal" id="infoModal">
+    <div class="info-card">
+      <h2>☕ Machine Levels</h2>
+      <p>Higher levels create better items more often.</p>
+
+      <div class="machine-levels" id="machineLevels"></div>
+
+      <button class="close-btn" onclick="closeMachineInfo()">Close</button>
+    </div>
+  </div>
+
   <div class="game-container">
     <header>
       <h1>☕ Mini Merge Cafe</h1>
-      <p>Drag items together, use the cafe machine, and serve your customers!</p>
+      <p>Drag, merge, serve customers, upgrade your machine, and complete each day!</p>
     </header>
 
-    <div class="main">
-      <div class="board" id="board"></div>
+    <div class="top-stats">
+      <div class="stat-card">
+        <div class="stat-title">Day</div>
+        <div class="stat-value" id="dayText">1</div>
+      </div>
 
-      <div class="side-panel">
-        <div class="score-box">
-          <h2>Score</h2>
-          <div class="score" id="score">0</div>
-          <div class="message" id="message"></div>
+      <div class="stat-card">
+        <div class="stat-title">Coins</div>
+        <div class="stat-value" id="coinsText">🪙 0</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-title">Energy</div>
+        <div class="stat-value" id="energyText">⚡ 20/20</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-title">Combo</div>
+        <div class="stat-value" id="comboText">x1</div>
+      </div>
+    </div>
+
+    <div class="customers-top-box">
+      <div class="customers-title">
+        <h2>Customers</h2>
+        <span>Complete orders to earn coins and energy</span>
+      </div>
+      <div class="customers-row" id="customers"></div>
+    </div>
+
+    <div class="main">
+      <div class="left-area">
+        <div class="day-goal-box">
+          <div class="goal-row">
+            <span id="goalText">Day Goal: 300 Coins</span>
+            <span id="goalProgressText">0 / 300</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="goalProgress"></div>
+          </div>
         </div>
 
-        <div class="customers-box">
-          <h2>Customers</h2>
-          <div id="customers"></div>
+        <div class="board-wrap">
+          <div class="board-title">Cafe Board</div>
+          <div class="board" id="board"></div>
+          <button class="machine-info-button" id="machineInfoButton" onclick="openMachineInfo()">i</button>
+          <div class="message-line" id="message">Welcome to Mini Merge Cafe!</div>
+        </div>
+      </div>
+
+      <div class="side-panel">
+        <div class="panel-box">
+          <h2>Upgrade</h2>
+          <div class="level-list">
+            Upgrade improves the chance of producing better items.
+          </div>
+          <button class="upgrade-btn" onclick="upgradeMachine()" id="upgradeBtn">
+            Upgrade - 120 🪙
+          </button>
         </div>
 
         <button class="reset-btn" onclick="resetGame()">Reset Game</button>
 
-        <div class="info-box">
+        <div class="panel-box">
           <h2>Merge Levels</h2>
           <div class="level-list">
-            🍪 Cookie<br>
-            ☕ Coffee<br>
-            🥐 Croissant<br>
-            🧁 Cupcake<br>
-            🍰 Cake<br>
-            🎂 Special Cake
+            <b>Dessert Line</b><br>
+            🍪 Cookie → 🧁 Cupcake → 🍰 Cake → 🎂 Special Cake<br><br>
+
+            <b>Drink Line</b><br>
+            🫘 Bean → ☕ Coffee → 🥤 Latte → 🍹 Fancy Drink
           </div>
         </div>
       </div>
@@ -387,47 +750,104 @@
 
   <script>
     const items = [
-      { name: "Cookie", emoji: "🍪" },
-      { name: "Coffee", emoji: "☕" },
-      { name: "Croissant", emoji: "🥐" },
-      { name: "Cupcake", emoji: "🧁" },
-      { name: "Cake", emoji: "🍰" },
-      { name: "Special Cake", emoji: "🎂" }
+      { name: "Cookie", emoji: "🍪", chain: "dessert", level: 1 },
+      { name: "Cupcake", emoji: "🧁", chain: "dessert", level: 2 },
+      { name: "Cake", emoji: "🍰", chain: "dessert", level: 3 },
+      { name: "Special Cake", emoji: "🎂", chain: "dessert", level: 4 },
+
+      { name: "Bean", emoji: "🫘", chain: "drink", level: 1 },
+      { name: "Coffee", emoji: "☕", chain: "drink", level: 2 },
+      { name: "Latte", emoji: "🥤", chain: "drink", level: 3 },
+      { name: "Fancy Drink", emoji: "🍹", chain: "drink", level: 4 }
     ];
 
-    const customers = [
+    const mergeMap = {
+      0: 1,
+      1: 2,
+      2: 3,
+      4: 5,
+      5: 6,
+      6: 7
+    };
+
+    const customerNames = [
       {
         name: "Ayşe",
         avatar: "👩",
-        text: "I want something sweet!",
-        order: 1
+        waiting: "I want something sweet!",
+        happy: "Thank you! This looks delicious!"
       },
       {
         name: "Mehmet",
         avatar: "👨",
-        text: "Can I get a fresh order?",
-        order: 2
+        waiting: "Can I get a fresh order?",
+        happy: "Perfect! This is exactly what I wanted."
       },
       {
         name: "Zeynep",
         avatar: "👧",
-        text: "I am waiting for my dessert!",
-        order: 3
+        waiting: "I am waiting for my dessert!",
+        happy: "Yay! I love this cafe."
       }
     ];
 
-    let board = Array(16).fill(null);
-    let score = 0;
+    let board = Array(20).fill(null);
+    let coins = 0;
+    let dayCoins = 0;
+    let energy = 20;
+    let maxEnergy = 20;
+    let machineLevel = 1;
+    let day = 1;
+    let dayGoal = 300;
+    let combo = 1;
+    let lastOrderTime = 0;
     let draggedIndex = null;
     let newItemIndex = null;
     let mergedItemIndex = null;
+    let mergeCheckIndex = null;
+    let customers = [];
 
     const generatorIndex = 0;
 
     const boardElement = document.getElementById("board");
-    const scoreElement = document.getElementById("score");
+    const coinsText = document.getElementById("coinsText");
+    const energyText = document.getElementById("energyText");
+    const comboText = document.getElementById("comboText");
+    const dayText = document.getElementById("dayText");
+    const goalText = document.getElementById("goalText");
+    const goalProgressText = document.getElementById("goalProgressText");
+    const goalProgress = document.getElementById("goalProgress");
     const message = document.getElementById("message");
     const customersElement = document.getElementById("customers");
+    const comboPop = document.getElementById("comboPop");
+    const dayComplete = document.getElementById("dayComplete");
+    const dayCompleteText = document.getElementById("dayCompleteText");
+    const upgradeBtn = document.getElementById("upgradeBtn");
+    const machineInfoButton = document.getElementById("machineInfoButton");
+    const infoModal = document.getElementById("infoModal");
+    const machineLevels = document.getElementById("machineLevels");
+
+    function playSound(type) {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        oscillator.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === "merge") oscillator.frequency.value = 520;
+        else if (type === "order") oscillator.frequency.value = 760;
+        else if (type === "error") oscillator.frequency.value = 180;
+        else oscillator.frequency.value = 360;
+
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+
+        oscillator.start(audioCtx.currentTime);
+        oscillator.stop(audioCtx.currentTime + 0.12);
+      } catch (e) {}
+    }
 
     function createBoard() {
       boardElement.innerHTML = "";
@@ -435,7 +855,6 @@
       board.forEach((item, index) => {
         const cell = document.createElement("div");
         cell.classList.add("cell");
-
         cell.dataset.index = index;
 
         cell.ondragover = allowDrop;
@@ -444,10 +863,16 @@
 
         if (index === generatorIndex) {
           cell.classList.add("generator");
+
+          if (energy <= 0) {
+            cell.classList.add("machine-cooldown");
+          }
+
           cell.innerHTML = `
             <div>☕</div>
             <div class="generator-label">Cafe Machine</div>
           `;
+
           cell.onclick = () => generateItem();
         } else {
           if (index === newItemIndex) {
@@ -470,6 +895,13 @@
               <div class="item-name">${items[item].name}</div>
             `;
           }
+
+          if (index === mergeCheckIndex) {
+            const check = document.createElement("div");
+            check.classList.add("merge-check");
+            check.textContent = "✓";
+            cell.appendChild(check);
+          }
         }
 
         boardElement.appendChild(cell);
@@ -479,6 +911,11 @@
         newItemIndex = null;
         mergedItemIndex = null;
       }, 500);
+
+      setTimeout(() => {
+        mergeCheckIndex = null;
+        createBoard();
+      }, 800);
     }
 
     function dragStart(event, index) {
@@ -536,11 +973,13 @@
         board[targetIndex] = draggedItem;
         board[draggedIndex] = null;
         message.textContent = "Item moved!";
-      } else if (draggedItem === targetItem) {
+      } else if (canMerge(draggedItem, targetItem)) {
         mergeItems(draggedIndex, targetIndex);
       } else {
         targetCell.classList.add("invalid-drop");
-        message.textContent = "Only same items can be merged!";
+        message.textContent = "Only same items from the same line can be merged!";
+        playSound("error");
+
         setTimeout(() => {
           targetCell.classList.remove("invalid-drop");
         }, 350);
@@ -550,47 +989,93 @@
       createBoard();
     }
 
+    function canMerge(a, b) {
+      return a === b && mergeMap[a] !== undefined;
+    }
+
     function mergeItems(firstIndex, secondIndex) {
-      const currentLevel = board[firstIndex];
+      const currentItem = board[firstIndex];
 
-      if (currentLevel < items.length - 1) {
-        board[secondIndex] = currentLevel + 1;
-        board[firstIndex] = null;
+      board[secondIndex] = mergeMap[currentItem];
+      board[firstIndex] = null;
 
-        mergedItemIndex = secondIndex;
+      mergedItemIndex = secondIndex;
+      mergeCheckIndex = secondIndex;
 
-        score += (currentLevel + 1) * 10;
-        message.textContent = "Nice merge!";
-      } else {
-        message.textContent = "This item is already max level!";
-      }
+      const reward = items[board[secondIndex]].level * 5;
+      coins += reward;
+      dayCoins += reward;
 
-      updateScore();
+      message.textContent = "Nice merge! +" + reward + " 🪙";
+      playSound("merge");
+
+      updateStats();
     }
 
     function generateItem() {
+      machineInfoButton.classList.add("show");
+
+      if (energy <= 0) {
+        message.textContent = "No energy left! Complete orders to get more energy.";
+        playSound("error");
+        return;
+      }
+
       const emptyCells = board
         .map((item, index) => {
-          if (index !== generatorIndex && item === null) {
-            return index;
-          }
+          if (index !== generatorIndex && item === null) return index;
           return null;
         })
         .filter(index => index !== null);
 
       if (emptyCells.length === 0) {
         message.textContent = "Board is full! Merge items first.";
+        playSound("error");
         return;
       }
 
+      energy--;
+
       const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-      const randomItem = Math.random() < 0.8 ? 0 : 1;
+      const randomItem = getMachineItem();
 
       board[randomCell] = randomItem;
       newItemIndex = randomCell;
 
       message.textContent = "Cafe Machine created a new item!";
+      playSound("generate");
+
+      updateStats();
       createBoard();
+    }
+
+    function getMachineItem() {
+      const chance = Math.random();
+
+      if (machineLevel === 1) {
+        return chance < 0.55 ? 0 : 4;
+      }
+
+      if (machineLevel === 2) {
+        if (chance < 0.40) return 0;
+        if (chance < 0.75) return 4;
+        if (chance < 0.88) return 1;
+        return 5;
+      }
+
+      if (machineLevel === 3) {
+        if (chance < 0.30) return 0;
+        if (chance < 0.60) return 4;
+        if (chance < 0.80) return 1;
+        if (chance < 0.95) return 5;
+        return Math.random() < 0.5 ? 2 : 6;
+      }
+
+      if (chance < 0.25) return 0;
+      if (chance < 0.50) return 4;
+      if (chance < 0.70) return 1;
+      if (chance < 0.88) return 5;
+      return Math.random() < 0.5 ? 2 : 6;
     }
 
     function createCustomers() {
@@ -605,7 +1090,7 @@
             <div class="avatar">${customer.avatar}</div>
             <div>
               <div class="customer-name">${customer.name}</div>
-              <div class="customer-text">${customer.text}</div>
+              <div class="customer-text">${customer.waiting}</div>
             </div>
           </div>
 
@@ -623,54 +1108,245 @@
     }
 
     function completeCustomerOrder(customerIndex) {
-      const wantedItem = customers[customerIndex].order;
+      const customer = customers[customerIndex];
+      const wantedItem = customer.order;
       const itemIndex = board.findIndex(item => item === wantedItem);
 
       if (itemIndex !== -1) {
         board[itemIndex] = null;
 
-        score += (wantedItem + 1) * 50;
+        const now = Date.now();
 
-        message.textContent = customers[customerIndex].name + " is happy! Order completed.";
+        if (now - lastOrderTime < 8000) {
+          combo++;
+        } else {
+          combo = 1;
+        }
 
-        customers[customerIndex].order = createRandomOrder();
+        lastOrderTime = now;
 
-        updateScore();
-        createCustomers();
+        const baseReward = items[wantedItem].level * 45;
+        const comboBonus = combo > 1 ? combo * 15 : 0;
+        const totalReward = baseReward + comboBonus;
+
+        coins += totalReward;
+        dayCoins += totalReward;
+
+        energy = Math.min(maxEnergy, energy + 4);
+
+        message.textContent = customer.name + " served! +" + totalReward + " 🪙, +4 ⚡";
+
+        if (combo > 1) {
+          showCombo();
+        }
+
+        customers[customerIndex] = createRandomCustomer(customerIndex);
+
+        playSound("order");
+        updateStats();
         createBoard();
+        createCustomers();
+        checkDayGoal();
       } else {
-        message.textContent = "You don't have this item for " + customers[customerIndex].name + " yet.";
+        message.textContent = "You don't have this item for " + customer.name + " yet.";
+        playSound("error");
       }
     }
 
-    function createRandomOrder() {
-      return Math.floor(Math.random() * 4) + 1;
+    function showCombo() {
+      comboPop.textContent = "Combo x" + combo + "!";
+      comboPop.classList.remove("show");
+      void comboPop.offsetWidth;
+      comboPop.classList.add("show");
     }
 
-    function updateScore() {
-      scoreElement.textContent = score;
+    function createRandomCustomer(index) {
+      const person = customerNames[index];
+
+      const possibleOrders = [1, 2, 5, 6];
+
+      if (day >= 2) {
+        possibleOrders.push(3);
+      }
+
+      if (day >= 3) {
+        possibleOrders.push(7);
+      }
+
+      const order = possibleOrders[Math.floor(Math.random() * possibleOrders.length)];
+
+      return {
+        ...person,
+        order
+      };
+    }
+
+    function setupCustomers() {
+      customers = [
+        createRandomCustomer(0),
+        createRandomCustomer(1),
+        createRandomCustomer(2)
+      ];
+    }
+
+    function upgradeMachine() {
+      const cost = getUpgradeCost();
+
+      if (machineLevel >= 4) {
+        message.textContent = "Max upgrade reached.";
+        return;
+      }
+
+      if (coins < cost) {
+        message.textContent = "Not enough coins. Need " + cost + " 🪙.";
+        playSound("error");
+        return;
+      }
+
+      coins -= cost;
+      machineLevel++;
+
+      maxEnergy += 5;
+      energy = maxEnergy;
+
+      message.textContent = "Upgrade completed!";
+      machineInfoButton.classList.add("show");
+      playSound("order");
+
+      updateStats();
+    }
+
+    function getUpgradeCost() {
+      return 120 + (machineLevel - 1) * 130;
+    }
+
+    function updateStats() {
+      coinsText.textContent = "🪙 " + coins;
+      energyText.textContent = "⚡ " + energy + "/" + maxEnergy;
+      comboText.textContent = "x" + combo;
+      dayText.textContent = day;
+
+      goalText.textContent = "Day Goal: " + dayGoal + " Coins";
+      goalProgressText.textContent = dayCoins + " / " + dayGoal;
+
+      const percent = Math.min(100, (dayCoins / dayGoal) * 100);
+      goalProgress.style.width = percent + "%";
+
+      if (machineLevel >= 4) {
+        upgradeBtn.textContent = "Max Upgrade";
+      } else {
+        upgradeBtn.textContent = "Upgrade - " + getUpgradeCost() + " 🪙";
+      }
+    }
+
+    function openMachineInfo() {
+      createMachineLevelInfo();
+      infoModal.style.display = "flex";
+    }
+
+    function closeMachineInfo() {
+      infoModal.style.display = "none";
+    }
+
+    function createMachineLevelInfo() {
+      const data = [
+        {
+          title: "Level 1",
+          text: "Creates basic items: 🍪 Cookie and 🫘 Bean."
+        },
+        {
+          title: "Level 2",
+          text: "Small chance to create 🧁 Cupcake and ☕ Coffee."
+        },
+        {
+          title: "Level 3",
+          text: "Better chance for upgraded items and rare 🍰 Cake / 🥤 Latte."
+        },
+        {
+          title: "Level 4",
+          text: "Best production level. Higher chance for advanced items."
+        }
+      ];
+
+      machineLevels.innerHTML = "";
+
+      data.forEach((level, index) => {
+        const div = document.createElement("div");
+        div.classList.add("machine-level-card");
+
+        if (machineLevel === index + 1) {
+          div.classList.add("active");
+        }
+
+        div.innerHTML = `
+          <b>${level.title}</b><br>
+          ${level.text}
+        `;
+
+        machineLevels.appendChild(div);
+      });
+    }
+
+    function checkDayGoal() {
+      if (dayCoins >= dayGoal) {
+        dayCompleteText.textContent = "You earned " + dayCoins + " coins today!";
+        dayComplete.style.display = "flex";
+      }
+    }
+
+    function nextDay() {
+      day++;
+      dayCoins = 0;
+      dayGoal += 180;
+      energy = maxEnergy;
+      combo = 1;
+      lastOrderTime = 0;
+
+      setupCustomers();
+
+      dayComplete.style.display = "none";
+      message.textContent = "Day " + day + " started!";
+
+      updateStats();
+      createCustomers();
+      createBoard();
     }
 
     function resetGame() {
-      board = Array(16).fill(null);
-      score = 0;
+      board = Array(20).fill(null);
+      coins = 0;
+      dayCoins = 0;
+      energy = 20;
+      maxEnergy = 20;
+      machineLevel = 1;
+      day = 1;
+      dayGoal = 300;
+      combo = 1;
+      lastOrderTime = 0;
       draggedIndex = null;
       newItemIndex = null;
       mergedItemIndex = null;
+      mergeCheckIndex = null;
 
-      customers[0].order = 1;
-      customers[1].order = 2;
-      customers[2].order = 3;
+      machineInfoButton.classList.remove("show");
 
-      updateScore();
+      setupCustomers();
+
+      message.textContent = "Game restarted!";
+
+      updateStats();
       createCustomers();
       createBoard();
 
-      message.textContent = "Game restarted!";
+      generateItem();
+      generateItem();
+      generateItem();
     }
 
-    createBoard();
+    setupCustomers();
+    updateStats();
     createCustomers();
+    createBoard();
 
     generateItem();
     generateItem();
