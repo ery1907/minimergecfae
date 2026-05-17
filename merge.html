@@ -1785,9 +1785,8 @@
     }
 
     function orderGivesPart(itemIndex) {
-      const level = items[itemIndex].level;
-      return level >= 3 || itemIndex === 1 || itemIndex === 5;
-    }
+  return Math.random() < 0.15;
+}
 
     function getAvailableOrders() {
       let possibleOrders = [1, 2, 5, 6];
