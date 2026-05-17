@@ -25,7 +25,7 @@
     }
 
     .game-container {
-      width: 1140px;
+      width: 1180px;
       max-width: 96%;
       background: rgba(255, 250, 244, 0.96);
       border-radius: 28px;
@@ -120,7 +120,7 @@
       border-radius: 16px;
       padding: 12px;
       transition: 0.2s;
-      min-height: 130px;
+      min-height: 145px;
     }
 
     .customer-card.new-customer {
@@ -128,14 +128,8 @@
     }
 
     @keyframes customerIn {
-      0% {
-        opacity: 0;
-        transform: translateY(-10px) scale(0.95);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+      0% { opacity: 0; transform: translateY(-10px) scale(0.95); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     .customer-card:hover {
@@ -174,7 +168,18 @@
       font-size: 16px;
       color: #5c3d2e;
       font-weight: bold;
-      margin: 10px 0;
+      margin: 8px 0;
+    }
+
+    .reward-line {
+      background: #fff3df;
+      border: 1px solid #f1c27d;
+      border-radius: 10px;
+      padding: 6px 8px;
+      color: #7b3f00;
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 8px;
     }
 
     .main {
@@ -188,7 +193,7 @@
       flex: 1;
     }
 
-    .day-goal-box {
+    .cafe-progress-box {
       background: #fff;
       border-radius: 18px;
       padding: 14px;
@@ -366,18 +371,9 @@
     }
 
     @keyframes popIn {
-      0% {
-        opacity: 0;
-        transform: scale(0.1) rotate(-20deg);
-      }
-      60% {
-        opacity: 1;
-        transform: scale(1.25) rotate(8deg);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1) rotate(0deg);
-      }
+      0% { opacity: 0; transform: scale(0.1) rotate(-20deg); }
+      60% { opacity: 1; transform: scale(1.25) rotate(8deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
     }
 
     @keyframes glow {
@@ -467,7 +463,7 @@
     }
 
     .side-panel {
-      width: 345px;
+      width: 375px;
       background: #fff0d6;
       padding: 18px;
       border-radius: 22px;
@@ -527,6 +523,15 @@
       background: #944d5e;
     }
 
+    .task-btn, .renovation-btn {
+      background: #f77f00;
+      margin-top: 8px;
+    }
+
+    .task-btn:hover, .renovation-btn:hover {
+      background: #d96e00;
+    }
+
     .reset-btn {
       background: #b56576;
       margin-top: 8px;
@@ -553,6 +558,26 @@
       color: #5c3d2e;
     }
 
+    .task-card {
+      background: #fff7ec;
+      border: 2px solid #f1c27d;
+      border-radius: 14px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .task-title {
+      font-weight: bold;
+      color: #5c3d2e;
+      margin-bottom: 5px;
+    }
+
+    .task-cost {
+      color: #7b3f00;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
     .upgrade-message {
       display: none;
       background: #edfff9;
@@ -575,35 +600,9 @@
       100% { opacity: 1; transform: scale(1); }
     }
 
-    .combo-pop {
-      position: fixed;
-      top: 22px;
-      right: 28px;
-      background: #e76f51;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 999px;
-      font-size: 22px;
-      font-weight: bold;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(0.6);
-      z-index: 20;
-    }
-
-    .combo-pop.show {
-      animation: comboShow 0.75s ease-out;
-    }
-
-    @keyframes comboShow {
-      0% { opacity: 0; transform: scale(0.6) translateY(-10px); }
-      35% { opacity: 1; transform: scale(1.15) translateY(0); }
-      100% { opacity: 0; transform: scale(1) translateY(-20px); }
-    }
-
-    .day-complete,
-    .info-modal {
+    .level-up-modal,
+    .info-modal,
+    .renovation-modal {
       position: fixed;
       inset: 0;
       background: rgba(0,0,0,0.45);
@@ -611,47 +610,356 @@
       justify-content: center;
       align-items: center;
       z-index: 10;
+      padding: 15px;
     }
 
-    .day-card,
-    .info-card {
-      width: 430px;
-      max-width: 92%;
+    .level-card,
+    .info-card,
+    .renovation-card {
+      width: 920px;
+      max-width: 96%;
+      max-height: 92vh;
+      overflow: auto;
       background: #fffaf4;
       border-radius: 24px;
-      padding: 24px;
+      padding: 22px;
       text-align: center;
       box-shadow: 0 15px 40px rgba(0,0,0,0.3);
       border: 4px solid #ffd166;
       animation: popIn 0.35s ease-out;
     }
 
-    .day-card h2,
-    .info-card h2 {
-      font-size: 27px;
-      margin-bottom: 8px;
+    .level-card {
+      width: 430px;
     }
 
-    .machine-levels {
-      margin-top: 15px;
-      display: grid;
+    .info-card {
+      width: 430px;
+    }
+
+    .renovation-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       gap: 10px;
+      margin-bottom: 15px;
     }
 
-    .machine-level-card {
+    .renovation-header h2 {
+      margin: 0;
+    }
+
+    .close-small {
+      width: auto;
+      padding: 8px 14px;
+      background: #b56576;
+    }
+
+    .renovation-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .cafe-scene {
+      min-height: 360px;
+      background: linear-gradient(#fff1d6, #ffe3b3);
+      border: 3px solid #d99b5c;
+      border-radius: 22px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 18px rgba(0,0,0,0.08);
+    }
+
+    .floor {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 105px;
+      background: repeating-linear-gradient(
+        90deg,
+        #d99b5c,
+        #d99b5c 35px,
+        #c98a4a 35px,
+        #c98a4a 70px
+      );
+      opacity: 0.75;
+    }
+
+    .cafe-sign {
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 8px 24px;
+      border-radius: 14px;
+      background: #a97142;
+      color: white;
+      font-weight: bold;
+      border: 3px dashed #5c3d2e;
+    }
+
+    .cafe-sign.fixed {
+      background: linear-gradient(145deg, #ffb703, #fb8500);
+      border: 3px solid #fff3df;
+      box-shadow: 0 0 18px rgba(255,183,3,0.8);
+      animation: signGlow 2s infinite ease-in-out;
+    }
+
+    @keyframes signGlow {
+      0% { filter: brightness(1); }
+      50% { filter: brightness(1.15); }
+      100% { filter: brightness(1); }
+    }
+
+    .counter {
+      position: absolute;
+      left: 55px;
+      bottom: 85px;
+      width: 220px;
+      height: 80px;
+      background: #9c6644;
+      border-radius: 16px 16px 8px 8px;
+      border: 4px solid #5c3d2e;
+      color: white;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .counter.clean {
+      background: linear-gradient(145deg, #bc8a5f, #8d5a3b);
+      box-shadow: 0 0 14px rgba(255,255,255,0.65);
+    }
+
+    .counter::before {
+      content: "☕";
+      position: absolute;
+      top: -28px;
+      right: 25px;
+      font-size: 27px;
+      animation: steamFloat 1.7s infinite ease-in-out;
+    }
+
+    @keyframes steamFloat {
+      0% { transform: translateY(0); opacity: 0.7; }
+      50% { transform: translateY(-5px); opacity: 1; }
+      100% { transform: translateY(0); opacity: 0.7; }
+    }
+
+    .stain {
+      position: absolute;
+      width: 28px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(80, 48, 25, 0.45);
+    }
+
+    .stain.one { left: 82px; bottom: 140px; }
+    .stain.two { left: 170px; bottom: 118px; }
+    .stain.three { left: 235px; bottom: 148px; }
+
+    .table {
+      position: absolute;
+      bottom: 54px;
+      right: 75px;
+      width: 105px;
+      height: 45px;
+      background: #a97142;
+      border-radius: 50%;
+      border: 4px solid #5c3d2e;
+      display: none;
+    }
+
+    .chairs-visible .table {
+      display: block;
+    }
+
+    .chair {
+      position: absolute;
+      width: 38px;
+      height: 42px;
+      border-radius: 12px;
+      background: #8d6e63;
+      border: 3px solid #5c3d2e;
+      display: none;
+    }
+
+    .chairs-visible .chair {
+      display: block;
+    }
+
+    .chair.c1 { right: 110px; bottom: 105px; }
+    .chair.c2 { right: 110px; bottom: 18px; }
+    .chair.c3 { right: 32px; bottom: 62px; }
+
+    .chair.wood { background: #8d6e63; }
+    .chair.blue { background: #4cc9f0; }
+    .chair.pink { background: #ffafcc; }
+
+    .display-case {
+      position: absolute;
+      left: 312px;
+      bottom: 92px;
+      width: 130px;
+      height: 75px;
+      background: rgba(255,255,255,0.55);
+      border: 4px solid #7b3f00;
+      border-radius: 14px;
+      display: none;
+      font-size: 28px;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .display-visible .display-case {
+      display: flex;
+      animation: glowCase 2s infinite ease-in-out;
+    }
+
+    @keyframes glowCase {
+      0% { box-shadow: 0 0 0 rgba(255,255,255,0.3); }
+      50% { box-shadow: 0 0 16px rgba(255,255,255,0.9); }
+      100% { box-shadow: 0 0 0 rgba(255,255,255,0.3); }
+    }
+
+    .wall-decor {
+      position: absolute;
+      right: 48px;
+      top: 78px;
+      width: 95px;
+      height: 55px;
+      border-radius: 12px;
+      background: white;
+      border: 3px solid #7b3f00;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      font-size: 28px;
+    }
+
+    .decor-visible .wall-decor {
+      display: flex;
+    }
+
+    .plant {
+      position: absolute;
+      left: 330px;
+      bottom: 45px;
+      font-size: 50px;
+      display: none;
+      animation: plantMove 2.4s infinite ease-in-out;
+    }
+
+    .plant-visible .plant {
+      display: block;
+    }
+
+    @keyframes plantMove {
+      0% { transform: rotate(-2deg); }
+      50% { transform: rotate(2deg); }
+      100% { transform: rotate(-2deg); }
+    }
+
+    .living-customer {
+      position: absolute;
+      right: 105px;
+      bottom: 88px;
+      font-size: 36px;
+      display: none;
+      animation: customerSit 2.2s infinite ease-in-out;
+    }
+
+    .chairs-visible .living-customer {
+      display: block;
+    }
+
+    @keyframes customerSit {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+      100% { transform: translateY(0); }
+    }
+
+    .task-panel {
       background: white;
       border: 2px solid #f1c27d;
-      border-radius: 15px;
-      padding: 10px;
+      border-radius: 18px;
+      padding: 14px;
       text-align: left;
-      font-size: 14px;
+    }
+
+    .task-panel h3 {
+      margin: 0 0 8px;
+      color: #7b3f00;
+    }
+
+    .task-requirements {
+      background: #fff3df;
+      border: 1px solid #f1c27d;
+      border-radius: 12px;
+      padding: 10px;
+      margin: 10px 0;
+      font-weight: bold;
       color: #5c3d2e;
     }
 
-    .machine-level-card.active {
+    .action-area {
+      background: #fffaf4;
+      border: 2px dashed #d99b5c;
+      border-radius: 14px;
+      padding: 12px;
+      min-height: 120px;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .small-action-btn {
+      width: auto;
+      min-width: 90px;
+      background: #2a9d8f;
+    }
+
+    .choice-card {
+      width: 100px;
+      background: #fff7ec;
+      border: 2px solid #f1c27d;
+      border-radius: 14px;
+      padding: 10px;
+      cursor: pointer;
+      text-align: center;
+      font-weight: bold;
+      color: #5c3d2e;
+      transition: 0.2s;
+    }
+
+    .choice-card:hover {
+      transform: translateY(-3px);
       border-color: #2a9d8f;
       background: #edfff9;
-      box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+    }
+
+    .choice-icon {
+      font-size: 36px;
+      margin-bottom: 4px;
+    }
+
+    .mini-progress {
+      margin-top: 8px;
+      font-weight: bold;
+      color: #7b3f00;
+      text-align: center;
     }
 
     .close-btn {
@@ -683,6 +991,10 @@
       }
 
       .customers-row {
+        grid-template-columns: 1fr;
+      }
+
+      .renovation-layout {
         grid-template-columns: 1fr;
       }
     }
@@ -717,25 +1029,50 @@
         align-items: flex-start;
         gap: 5px;
       }
+
+      .cafe-scene {
+        min-height: 320px;
+      }
+
+      .counter {
+        left: 20px;
+        width: 170px;
+      }
+
+      .display-case {
+        left: 205px;
+        width: 100px;
+      }
+
+      .plant {
+        left: 225px;
+      }
+
+      .table {
+        right: 40px;
+      }
+
+      .chair.c1 { right: 75px; }
+      .chair.c2 { right: 75px; }
+      .chair.c3 { right: 5px; }
+      .living-customer { right: 72px; }
     }
   </style>
 </head>
 
 <body>
-  <div class="combo-pop" id="comboPop">Combo x2!</div>
-
-  <div class="day-complete" id="dayComplete">
-    <div class="day-card">
-      <h2>🎉 Day Completed!</h2>
-      <p id="dayCompleteText">Great job!</p>
-      <button onclick="nextDay()">Start Next Day</button>
+  <div class="level-up-modal" id="levelUpModal">
+    <div class="level-card">
+      <h2>🎉 Cafe Level Up!</h2>
+      <p id="levelUpText">Great job!</p>
+      <button onclick="nextCafeLevel()">Continue</button>
     </div>
   </div>
 
   <div class="info-modal" id="infoModal">
     <div class="info-card">
       <h2>⚙️ Machine Levels</h2>
-      <p>Drink and Dessert Machines upgrade separately.</p>
+      <p>Use 🔧 Machine Parts to upgrade machines separately.</p>
 
       <div class="machine-levels" id="machineLevels"></div>
 
@@ -743,16 +1080,53 @@
     </div>
   </div>
 
+  <div class="renovation-modal" id="renovationModal">
+    <div class="renovation-card">
+      <div class="renovation-header">
+        <h2>🏡 Cafe Renovation</h2>
+        <button class="close-small" onclick="closeRenovation()">Close</button>
+      </div>
+
+      <div class="renovation-layout">
+        <div>
+          <div class="cafe-scene" id="cafeScene">
+            <div class="cafe-sign" id="cafeSign">Mini Cafe</div>
+            <div class="wall-decor" id="wallDecor">🖼️</div>
+            <div class="counter" id="counter">Counter</div>
+            <div class="stain one" id="stain1"></div>
+            <div class="stain two" id="stain2"></div>
+            <div class="stain three" id="stain3"></div>
+            <div class="display-case">🧁 🍰</div>
+            <div class="table"></div>
+            <div class="chair c1" id="chair1"></div>
+            <div class="chair c2" id="chair2"></div>
+            <div class="chair c3" id="chair3"></div>
+            <div class="living-customer">🙂</div>
+            <div class="plant">🪴</div>
+            <div class="floor"></div>
+          </div>
+        </div>
+
+        <div class="task-panel">
+          <h3 id="renovationTaskTitle">Current Task</h3>
+          <div id="renovationTaskDescription"></div>
+          <div class="task-requirements" id="renovationRequirements"></div>
+          <div class="action-area" id="renovationActionArea"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="game-container">
     <header>
       <h1>☕ Mini Merge Cafe</h1>
-      <p>Use two machines, merge items, serve customers, and upgrade machines separately!</p>
+      <p>Serve orders, earn coins, complete cafe actions, and build a living cafe!</p>
     </header>
 
     <div class="top-stats">
       <div class="stat-card">
-        <div class="stat-title">Day</div>
-        <div class="stat-value" id="dayText">1</div>
+        <div class="stat-title">Cafe Level</div>
+        <div class="stat-value" id="cafeLevelText">1</div>
       </div>
 
       <div class="stat-card">
@@ -761,33 +1135,33 @@
       </div>
 
       <div class="stat-card">
-        <div class="stat-title">Energy</div>
-        <div class="stat-value" id="energyText">⚡ 20/20</div>
+        <div class="stat-title">Parts</div>
+        <div class="stat-value" id="partsText">🔧 0</div>
       </div>
 
       <div class="stat-card">
-        <div class="stat-title">Combo</div>
-        <div class="stat-value" id="comboText">x1</div>
+        <div class="stat-title">Energy</div>
+        <div class="stat-value" id="energyText">⚡ 20/20</div>
       </div>
     </div>
 
     <div class="customers-top-box">
       <div class="customers-title">
         <h2>Customers</h2>
-        <span>Only the served customer leaves and a new one arrives</span>
+        <span>Some orders also give 🔧 parts</span>
       </div>
       <div class="customers-row" id="customers"></div>
     </div>
 
     <div class="main">
       <div class="left-area">
-        <div class="day-goal-box">
+        <div class="cafe-progress-box">
           <div class="goal-row">
-            <span id="goalText">Day Goal: 300 Coins</span>
-            <span id="goalProgressText">0 / 300</span>
+            <span id="progressText">Cafe Tasks: 0 / 3</span>
+            <span id="progressLevelText">Level 1</span>
           </div>
           <div class="progress-bar">
-            <div class="progress-fill" id="goalProgress"></div>
+            <div class="progress-fill" id="taskProgress"></div>
           </div>
         </div>
 
@@ -801,9 +1175,17 @@
 
       <div class="side-panel">
         <div class="panel-box">
-          <h2>Upgrade</h2>
+          <h2>Cafe Renovation</h2>
+          <div id="taskSummaryBox"></div>
+          <button class="renovation-btn" onclick="openRenovation()">
+            Open Cafe Renovation
+          </button>
+        </div>
+
+        <div class="panel-box">
+          <h2>Machine Upgrades</h2>
           <div class="level-list">
-            Upgrade one machine at a time. Each machine has its own level.
+            Use 🔧 Machine Parts. Coins are for cafe tasks.
           </div>
 
           <button class="upgrade-btn" onclick="upgradeMachine('drink')" id="drinkUpgradeBtn">
@@ -870,17 +1252,85 @@
       { avatar: "👵", waiting: "Something warm and nice, please." }
     ];
 
+    const cafeTasks = [
+      {
+        title: "Clean the Counter",
+        cost: 60,
+        type: "clean",
+        description: "The counter is dirty. Clean all stains to make the cafe look fresh.",
+        rewardEnergy: 3
+      },
+      {
+        title: "Fix the Cafe Sign",
+        cost: 110,
+        type: "repair",
+        description: "The cafe sign is old and broken. Repair it step by step.",
+        rewardEnergy: 4
+      },
+      {
+        title: "Buy New Chairs",
+        cost: 180,
+        type: "chooseChairs",
+        description: "Choose a chair style for your cafe seating area.",
+        rewardEnergy: 0
+      },
+      {
+        title: "Add Dessert Display",
+        cost: 160,
+        type: "itemDisplay",
+        itemRequired: 1,
+        description: "Use a Cupcake from your board and place it into the dessert display.",
+        rewardEnergy: 5
+      },
+      {
+        title: "Decorate the Wall",
+        cost: 190,
+        type: "chooseDecor",
+        description: "Choose a wall decoration to give the cafe personality.",
+        rewardEnergy: 2
+      },
+      {
+        title: "Place a Plant",
+        cost: 150,
+        type: "placePlant",
+        description: "Place a plant near the window to make the cafe feel alive.",
+        rewardEnergy: 3
+      },
+      {
+        title: "Open VIP Table",
+        cost: 350,
+        type: "click",
+        clicksNeeded: 4,
+        description: "Prepare a VIP table for future valuable customers.",
+        rewardEnergy: 4
+      },
+      {
+        title: "Improve Dessert Corner",
+        cost: 420,
+        type: "itemDisplay",
+        itemRequired: 2,
+        description: "Use a Cake to improve your dessert corner.",
+        rewardEnergy: 5
+      },
+      {
+        title: "Polish the Cafe Floor",
+        cost: 300,
+        type: "click",
+        clicksNeeded: 5,
+        description: "Polish the floor to make the cafe shine.",
+        rewardEnergy: 4
+      }
+    ];
+
     let board = Array(20).fill(null);
     let coins = 0;
-    let dayCoins = 0;
+    let parts = 0;
     let energy = 20;
     let maxEnergy = 20;
     let drinkMachineLevel = 1;
     let dessertMachineLevel = 1;
-    let day = 1;
-    let dayGoal = 300;
-    let combo = 1;
-    let lastOrderTime = 0;
+    let cafeLevel = 1;
+    let completedTasks = 0;
     let draggedIndex = null;
     let selectedIndex = null;
     let newItemIndex = null;
@@ -888,28 +1338,49 @@
     let lastChangedCustomerIndex = null;
     let customers = [];
 
+    let cleanClicks = 0;
+    let repairClicks = 0;
+    let generalActionClicks = 0;
+
+    let cafeState = {
+      counterClean: false,
+      signFixed: false,
+      chairs: null,
+      display: false,
+      decor: null,
+      plant: false,
+      vip: false,
+      floor: false
+    };
+
     const drinkMachineIndex = 0;
     const dessertMachineIndex = 1;
 
     const boardElement = document.getElementById("board");
     const coinsText = document.getElementById("coinsText");
+    const partsText = document.getElementById("partsText");
     const energyText = document.getElementById("energyText");
-    const comboText = document.getElementById("comboText");
-    const dayText = document.getElementById("dayText");
-    const goalText = document.getElementById("goalText");
-    const goalProgressText = document.getElementById("goalProgressText");
-    const goalProgress = document.getElementById("goalProgress");
+    const cafeLevelText = document.getElementById("cafeLevelText");
+    const progressText = document.getElementById("progressText");
+    const progressLevelText = document.getElementById("progressLevelText");
+    const taskProgress = document.getElementById("taskProgress");
     const message = document.getElementById("message");
     const customersElement = document.getElementById("customers");
-    const comboPop = document.getElementById("comboPop");
-    const dayComplete = document.getElementById("dayComplete");
-    const dayCompleteText = document.getElementById("dayCompleteText");
+    const taskSummaryBox = document.getElementById("taskSummaryBox");
+    const levelUpModal = document.getElementById("levelUpModal");
+    const levelUpText = document.getElementById("levelUpText");
     const drinkUpgradeBtn = document.getElementById("drinkUpgradeBtn");
     const dessertUpgradeBtn = document.getElementById("dessertUpgradeBtn");
     const upgradeMessage = document.getElementById("upgradeMessage");
     const machineInfoButton = document.getElementById("machineInfoButton");
     const infoModal = document.getElementById("infoModal");
     const machineLevels = document.getElementById("machineLevels");
+    const renovationModal = document.getElementById("renovationModal");
+    const cafeScene = document.getElementById("cafeScene");
+    const renovationTaskTitle = document.getElementById("renovationTaskTitle");
+    const renovationTaskDescription = document.getElementById("renovationTaskDescription");
+    const renovationRequirements = document.getElementById("renovationRequirements");
+    const renovationActionArea = document.getElementById("renovationActionArea");
 
     function playSound(type) {
       try {
@@ -1013,9 +1484,7 @@
       }
 
       const emoji = getMachineEmoji(type);
-      const label = type === "drink"
-        ? "Drink Lv." + level
-        : "Dessert Lv." + level;
+      const label = type === "drink" ? "Drink Lv." + level : "Dessert Lv." + level;
 
       cell.innerHTML = `
         <div>${emoji}</div>
@@ -1203,7 +1672,7 @@
       machineInfoButton.classList.add("show");
 
       if (energy <= 0) {
-        message.textContent = "No energy left! Complete orders to get more energy.";
+        message.textContent = "No energy left! Complete cafe tasks to get more energy.";
         playSound("error");
         return;
       }
@@ -1289,6 +1758,37 @@
       return 7;
     }
 
+    function getOrderReward(itemIndex) {
+      const item = items[itemIndex];
+      const baseRewards = {
+        1: 20,
+        2: 45,
+        3: 85,
+        4: 150
+      };
+
+      return baseRewards[item.level] + ((cafeLevel - 1) * 5);
+    }
+
+    function orderGivesPart(itemIndex) {
+      const level = items[itemIndex].level;
+      return level >= 3 || itemIndex === 1 || itemIndex === 5;
+    }
+
+    function getAvailableOrders() {
+      let possibleOrders = [1, 2, 5, 6];
+
+      if (cafeLevel >= 2) {
+        possibleOrders.push(3);
+      }
+
+      if (cafeLevel >= 3) {
+        possibleOrders.push(7);
+      }
+
+      return possibleOrders;
+    }
+
     function createCustomers() {
       customersElement.innerHTML = "";
 
@@ -1300,6 +1800,9 @@
           customerCard.classList.add("new-customer");
         }
 
+        const reward = getOrderReward(customer.order);
+        const partText = customer.givesPart ? " + 1 🔧" : "";
+
         customerCard.innerHTML = `
           <div class="customer-top">
             <div class="avatar">${customer.avatar}</div>
@@ -1310,6 +1813,10 @@
 
           <div class="order-item">
             Order: ${items[customer.order].emoji} ${items[customer.order].name}
+          </div>
+
+          <div class="reward-line">
+            Reward: ${reward} 🪙${partText}
           </div>
 
           <button onclick="completeCustomerOrder(${index})">
@@ -1333,79 +1840,410 @@
       if (itemIndex !== -1) {
         board[itemIndex] = null;
 
-        const now = Date.now();
+        const reward = getOrderReward(wantedItem);
+        coins += reward;
 
-        if (now - lastOrderTime < 8000) {
-          combo++;
-        } else {
-          combo = 1;
+        let partMessage = "";
+
+        if (customer.givesPart) {
+          parts++;
+          partMessage = ", +1 🔧";
         }
 
-        lastOrderTime = now;
+        message.textContent = "Customer served! +" + reward + " 🪙" + partMessage;
 
-        const baseReward = items[wantedItem].level * 55;
-        const comboBonus = combo > 1 ? combo * 15 : 0;
-        const totalReward = baseReward + comboBonus;
-
-        coins += totalReward;
-        dayCoins += totalReward;
-
-        energy = Math.min(maxEnergy, energy + 4);
-
-        message.textContent = "Customer served! +" + totalReward + " 🪙, +4 ⚡";
-
-        if (combo > 1) {
-          showCombo();
-        }
-
-        customers[customerIndex] = createRandomCustomer();
+        customers[customerIndex] = createRandomCustomer(customerIndex);
         lastChangedCustomerIndex = customerIndex;
 
         playSound("order");
         updateStats();
         createCustomers();
         createBoard();
-        checkDayGoal();
       } else {
         message.textContent = "You don't have this order item yet.";
         playSound("error");
       }
     }
 
-    function showCombo() {
-      comboPop.textContent = "Combo x" + combo + "!";
-      comboPop.classList.remove("show");
-      void comboPop.offsetWidth;
-      comboPop.classList.add("show");
-    }
-
-    function createRandomCustomer() {
+    function createRandomCustomer(replaceIndex = -1) {
       const person = customerPool[Math.floor(Math.random() * customerPool.length)];
+      const usedOrders = customers
+        .map((customer, index) => index !== replaceIndex ? customer.order : null)
+        .filter(order => order !== null);
 
-      const possibleOrders = [1, 2, 5, 6];
+      let possibleOrders = getAvailableOrders().filter(order => !usedOrders.includes(order));
 
-      if (day >= 2) {
-        possibleOrders.push(3);
-      }
-
-      if (day >= 3) {
-        possibleOrders.push(7);
+      if (possibleOrders.length === 0) {
+        possibleOrders = getAvailableOrders();
       }
 
       const order = possibleOrders[Math.floor(Math.random() * possibleOrders.length)];
 
       return {
         ...person,
-        order
+        order,
+        givesPart: orderGivesPart(order)
       };
     }
 
     function setupCustomers() {
-      customers = [
-        createRandomCustomer(),
-        createRandomCustomer(),
-        createRandomCustomer()
+      customers = [];
+      customers.push(createRandomCustomer());
+      customers.push(createRandomCustomer());
+      customers.push(createRandomCustomer());
+    }
+
+    function createTaskSummary() {
+      const task = cafeTasks[completedTasks];
+
+      if (!task) {
+        taskSummaryBox.innerHTML = `
+          <div class="task-card">
+            <div class="task-title">All renovation tasks completed ✅</div>
+            <div class="task-cost">Your cafe looks amazing.</div>
+          </div>
+        `;
+        return;
+      }
+
+      taskSummaryBox.innerHTML = `
+        <div class="task-card">
+          <div class="task-title">${completedTasks + 1}. ${task.title}</div>
+          <div class="task-cost">Cost: ${task.cost} 🪙</div>
+          <div class="task-cost">Reward: ${task.rewardEnergy > 0 ? "+" + task.rewardEnergy + " ⚡" : "Cafe improvement"}</div>
+        </div>
+      `;
+    }
+
+    function openRenovation() {
+      renovationModal.style.display = "flex";
+      renderCafeScene();
+      renderRenovationTask();
+    }
+
+    function closeRenovation() {
+      renovationModal.style.display = "none";
+    }
+
+    function renderCafeScene() {
+      cafeScene.classList.toggle("chairs-visible", cafeState.chairs !== null);
+      cafeScene.classList.toggle("display-visible", cafeState.display);
+      cafeScene.classList.toggle("decor-visible", cafeState.decor !== null);
+      cafeScene.classList.toggle("plant-visible", cafeState.plant);
+
+      document.getElementById("counter").classList.toggle("clean", cafeState.counterClean);
+      document.getElementById("cafeSign").classList.toggle("fixed", cafeState.signFixed);
+
+      document.getElementById("stain1").style.display = cafeState.counterClean ? "none" : "block";
+      document.getElementById("stain2").style.display = cafeState.counterClean ? "none" : "block";
+      document.getElementById("stain3").style.display = cafeState.counterClean ? "none" : "block";
+
+      const chairs = [
+        document.getElementById("chair1"),
+        document.getElementById("chair2"),
+        document.getElementById("chair3")
       ];
+
+      chairs.forEach(chair => {
+        chair.classList.remove("wood", "blue", "pink");
+
+        if (cafeState.chairs) {
+          chair.classList.add(cafeState.chairs);
+        }
+      });
+
+      const wallDecor = document.getElementById("wallDecor");
+      if (cafeState.decor === "art") wallDecor.textContent = "🖼️";
+      else if (cafeState.decor === "clock") wallDecor.textContent = "🕒";
+      else if (cafeState.decor === "heart") wallDecor.textContent = "💖";
+      else wallDecor.textContent = "🖼️";
+    }
+
+    function renderRenovationTask() {
+      const task = cafeTasks[completedTasks];
+
+      if (!task) {
+        renovationTaskTitle.textContent = "All Tasks Completed ✅";
+        renovationTaskDescription.textContent = "Your cafe has been renovated beautifully.";
+        renovationRequirements.textContent = "No more tasks.";
+        renovationActionArea.innerHTML = "Enjoy your living cafe!";
+        return;
+      }
+
+      renovationTaskTitle.textContent = task.title;
+      renovationTaskDescription.textContent = task.description;
+
+      let requirementText = "Need: " + task.cost + " 🪙";
+
+      if (task.itemRequired !== undefined) {
+        requirementText += " + " + items[task.itemRequired].emoji + " " + items[task.itemRequired].name;
+      }
+
+      requirementText += " | Reward: " + (task.rewardEnergy > 0 ? "+" + task.rewardEnergy + " ⚡" : "Cafe improvement");
+
+      renovationRequirements.textContent = requirementText;
+
+      if (task.type === "clean") renderCleanAction(task);
+      else if (task.type === "repair") renderRepairAction(task);
+      else if (task.type === "chooseChairs") renderChairChoices(task);
+      else if (task.type === "itemDisplay") renderItemTask(task);
+      else if (task.type === "chooseDecor") renderDecorChoices(task);
+      else if (task.type === "placePlant") renderPlantAction(task);
+      else if (task.type === "click") renderClickAction(task);
+    }
+
+    function canPayTask(task) {
+      if (coins < task.cost) {
+        message.textContent = "Not enough coins for this renovation task.";
+        playSound("error");
+        return false;
+      }
+
+      if (task.itemRequired !== undefined && !board.includes(task.itemRequired)) {
+        message.textContent = "You need " + items[task.itemRequired].emoji + " " + items[task.itemRequired].name + " for this task.";
+        playSound("error");
+        return false;
+      }
+
+      return true;
+    }
+
+    function payTaskCost(task) {
+      coins -= task.cost;
+
+      if (task.itemRequired !== undefined) {
+        const idx = board.findIndex(item => item === task.itemRequired);
+        if (idx !== -1) board[idx] = null;
+      }
+    }
+
+    function finishTask(extraCallback) {
+      const task = cafeTasks[completedTasks];
+
+      if (!canPayTask(task)) return;
+
+      payTaskCost(task);
+
+      if (typeof extraCallback === "function") {
+        extraCallback(task);
+      }
+
+      if (task.rewardEnergy > 0) {
+        energy = Math.min(maxEnergy, energy + task.rewardEnergy);
+      }
+
+      completedTasks++;
+      cleanClicks = 0;
+      repairClicks = 0;
+      generalActionClicks = 0;
+
+      message.textContent = "Renovation completed: " + task.title + "!";
+
+      playSound("upgrade");
+      updateStats();
+      createTaskSummary();
+      createBoard();
+      renderCafeScene();
+      renderRenovationTask();
+      checkCafeLevelUp();
+    }
+
+    function renderCleanAction(task) {
+      renovationActionArea.innerHTML = `
+        <div>Tap the cleaning cloth 3 times to clean the counter.</div>
+        <div class="mini-progress">Clean progress: ${cleanClicks}/3</div>
+        <div class="action-row">
+          <button class="small-action-btn" onclick="cleanStep()">🧽 Clean</button>
+        </div>
+      `;
+    }
+
+    function cleanStep() {
+      const task = cafeTasks[completedTasks];
+
+      if (!canPayTask(task)) return;
+
+      cleanClicks++;
+      renovationActionArea.querySelector(".mini-progress").textContent = "Clean progress: " + cleanClicks + "/3";
+
+      if (cleanClicks >= 3) {
+        finishTask(() => {
+          cafeState.counterClean = true;
+        });
+      }
+    }
+
+    function renderRepairAction(task) {
+      renovationActionArea.innerHTML = `
+        <div>Repair the sign in 3 steps.</div>
+        <div class="mini-progress">Repair progress: ${repairClicks}/3</div>
+        <div class="action-row">
+          <button class="small-action-btn" onclick="repairStep()">🔨 Repair</button>
+        </div>
+      `;
+    }
+
+    function repairStep() {
+      const task = cafeTasks[completedTasks];
+
+      if (!canPayTask(task)) return;
+
+      repairClicks++;
+      renovationActionArea.querySelector(".mini-progress").textContent = "Repair progress: " + repairClicks + "/3";
+
+      if (repairClicks >= 3) {
+        finishTask(() => {
+          cafeState.signFixed = true;
+        });
+      }
+    }
+
+    function renderChairChoices(task) {
+      renovationActionArea.innerHTML = `
+        <div>Choose a chair style for your cafe.</div>
+        <div class="action-row">
+          <div class="choice-card" onclick="chooseChairs('wood')">
+            <div class="choice-icon">🪑</div>
+            Wood
+          </div>
+          <div class="choice-card" onclick="chooseChairs('blue')">
+            <div class="choice-icon">🔵</div>
+            Blue
+          </div>
+          <div class="choice-card" onclick="chooseChairs('pink')">
+            <div class="choice-icon">🌸</div>
+            Pink
+          </div>
+        </div>
+      `;
+    }
+
+    function chooseChairs(style) {
+      finishTask(() => {
+        cafeState.chairs = style;
+      });
+    }
+
+    function renderItemTask(task) {
+      renovationActionArea.innerHTML = `
+        <div>This task needs a board item.</div>
+        <div class="mini-progress">
+          Required item: ${items[task.itemRequired].emoji} ${items[task.itemRequired].name}
+        </div>
+        <div class="action-row">
+          <button class="small-action-btn" onclick="completeItemTask()">Place Item</button>
+        </div>
+      `;
+    }
+
+    function completeItemTask() {
+      const task = cafeTasks[completedTasks];
+
+      finishTask(() => {
+        if (task.title.includes("Dessert Display")) {
+          cafeState.display = true;
+        }
+      });
+    }
+
+    function renderDecorChoices(task) {
+      renovationActionArea.innerHTML = `
+        <div>Choose a wall decoration.</div>
+        <div class="action-row">
+          <div class="choice-card" onclick="chooseDecor('art')">
+            <div class="choice-icon">🖼️</div>
+            Art
+          </div>
+          <div class="choice-card" onclick="chooseDecor('clock')">
+            <div class="choice-icon">🕒</div>
+            Clock
+          </div>
+          <div class="choice-card" onclick="chooseDecor('heart')">
+            <div class="choice-icon">💖</div>
+            Cute
+          </div>
+        </div>
+      `;
+    }
+
+    function chooseDecor(style) {
+      finishTask(() => {
+        cafeState.decor = style;
+      });
+    }
+
+    function renderPlantAction(task) {
+      renovationActionArea.innerHTML = `
+        <div>Place the plant near the window.</div>
+        <div class="mini-progress">Placement: ${generalActionClicks}/2</div>
+        <div class="action-row">
+          <button class="small-action-btn" onclick="plantStep()">🪴 Place</button>
+        </div>
+      `;
+    }
+
+    function plantStep() {
+      const task = cafeTasks[completedTasks];
+
+      if (!canPayTask(task)) return;
+
+      generalActionClicks++;
+      renovationActionArea.querySelector(".mini-progress").textContent = "Placement: " + generalActionClicks + "/2";
+
+      if (generalActionClicks >= 2) {
+        finishTask(() => {
+          cafeState.plant = true;
+        });
+      }
+    }
+
+    function renderClickAction(task) {
+      const needed = task.clicksNeeded || 3;
+
+      renovationActionArea.innerHTML = `
+        <div>Complete the mini action.</div>
+        <div class="mini-progress">Action progress: ${generalActionClicks}/${needed}</div>
+        <div class="action-row">
+          <button class="small-action-btn" onclick="generalTaskStep()">Do Action</button>
+        </div>
+      `;
+    }
+
+    function generalTaskStep() {
+      const task = cafeTasks[completedTasks];
+
+      if (!canPayTask(task)) return;
+
+      const needed = task.clicksNeeded || 3;
+
+      generalActionClicks++;
+      renovationActionArea.querySelector(".mini-progress").textContent = "Action progress: " + generalActionClicks + "/" + needed;
+
+      if (generalActionClicks >= needed) {
+        finishTask(() => {
+          if (task.title.includes("VIP")) cafeState.vip = true;
+          if (task.title.includes("Floor")) cafeState.floor = true;
+        });
+      }
+    }
+
+    function checkCafeLevelUp() {
+      if (completedTasks > 0 && completedTasks % 3 === 0) {
+        levelUpText.textContent = "You completed 3 renovation tasks. Cafe Level " + (cafeLevel + 1) + " unlocked!";
+        levelUpModal.style.display = "flex";
+      }
+    }
+
+    function nextCafeLevel() {
+      cafeLevel++;
+      levelUpModal.style.display = "none";
+      message.textContent = "Cafe Level " + cafeLevel + " started! New orders may appear.";
+
+      updateStats();
+      setupCustomers();
+      createCustomers();
+      createBoard();
+      createTaskSummary();
     }
 
     function upgradeMachine(type) {
@@ -1419,13 +2257,13 @@
         return;
       }
 
-      if (coins < cost) {
-        message.textContent = "Not enough coins. Need " + cost + " 🪙.";
+      if (parts < cost) {
+        message.textContent = "Not enough parts. Need " + cost + " 🔧.";
         playSound("error");
         return;
       }
 
-      coins -= cost;
+      parts -= cost;
 
       if (type === "drink") {
         drinkMachineLevel++;
@@ -1437,9 +2275,7 @@
         upgradeMessage.textContent = "Dessert Machine upgraded to Level " + dessertMachineLevel + ".";
       }
 
-      maxEnergy += 3;
-      energy = maxEnergy;
-
+      maxEnergy += 2;
       machineInfoButton.classList.add("show");
 
       upgradeMessage.classList.add("show");
@@ -1455,31 +2291,36 @@
 
     function getUpgradeCost(type) {
       const level = getMachineLevel(type);
-      return 120 + (level - 1) * 130;
+
+      if (level === 1) return 3;
+      if (level === 2) return 6;
+      if (level === 3) return 10;
+
+      return 999;
     }
 
     function updateStats() {
       coinsText.textContent = "🪙 " + coins;
+      partsText.textContent = "🔧 " + parts;
       energyText.textContent = "⚡ " + energy + "/" + maxEnergy;
-      comboText.textContent = "x" + combo;
-      dayText.textContent = day;
+      cafeLevelText.textContent = cafeLevel;
 
-      goalText.textContent = "Day Goal: " + dayGoal + " Coins";
-      goalProgressText.textContent = dayCoins + " / " + dayGoal;
+      progressText.textContent = "Cafe Tasks: " + (completedTasks % 3) + " / 3";
+      progressLevelText.textContent = "Level " + cafeLevel;
 
-      const percent = Math.min(100, (dayCoins / dayGoal) * 100);
-      goalProgress.style.width = percent + "%";
+      const percent = ((completedTasks % 3) / 3) * 100;
+      taskProgress.style.width = percent + "%";
 
       if (drinkMachineLevel >= 4) {
         drinkUpgradeBtn.textContent = "Drink Machine Max";
       } else {
-        drinkUpgradeBtn.textContent = "Upgrade Drink - " + getUpgradeCost("drink") + " 🪙";
+        drinkUpgradeBtn.textContent = "Upgrade Drink - " + getUpgradeCost("drink") + " 🔧";
       }
 
       if (dessertMachineLevel >= 4) {
         dessertUpgradeBtn.textContent = "Dessert Machine Max";
       } else {
-        dessertUpgradeBtn.textContent = "Upgrade Dessert - " + getUpgradeCost("dessert") + " 🪙";
+        dessertUpgradeBtn.textContent = "Upgrade Dessert - " + getUpgradeCost("dessert") + " 🔧";
       }
     }
 
@@ -1521,59 +2362,47 @@
       });
     }
 
-    function checkDayGoal() {
-      if (dayCoins >= dayGoal) {
-        dayCompleteText.textContent = "You earned " + dayCoins + " coins today!";
-        dayComplete.style.display = "flex";
-      }
-    }
-
-    function nextDay() {
-      day++;
-      dayCoins = 0;
-      dayGoal += 180;
-      energy = maxEnergy;
-      combo = 1;
-      lastOrderTime = 0;
-      lastChangedCustomerIndex = null;
-      selectedIndex = null;
-
-      setupCustomers();
-
-      dayComplete.style.display = "none";
-      message.textContent = "Day " + day + " started!";
-
-      updateStats();
-      createCustomers();
-      createBoard();
-    }
-
     function resetGame() {
       board = Array(20).fill(null);
       coins = 0;
-      dayCoins = 0;
+      parts = 0;
       energy = 20;
       maxEnergy = 20;
       drinkMachineLevel = 1;
       dessertMachineLevel = 1;
-      day = 1;
-      dayGoal = 300;
-      combo = 1;
-      lastOrderTime = 0;
+      cafeLevel = 1;
+      completedTasks = 0;
       draggedIndex = null;
       selectedIndex = null;
       newItemIndex = null;
       mergedItemIndex = null;
       lastChangedCustomerIndex = null;
+      cleanClicks = 0;
+      repairClicks = 0;
+      generalActionClicks = 0;
+
+      cafeState = {
+        counterClean: false,
+        signFixed: false,
+        chairs: null,
+        display: false,
+        decor: null,
+        plant: false,
+        vip: false,
+        floor: false
+      };
 
       machineInfoButton.classList.remove("show");
       upgradeMessage.classList.remove("show");
+      levelUpModal.style.display = "none";
+      renovationModal.style.display = "none";
 
       setupCustomers();
 
       message.textContent = "Game restarted!";
 
       updateStats();
+      createTaskSummary();
       createCustomers();
       createBoard();
 
@@ -1584,6 +2413,7 @@
 
     setupCustomers();
     updateStats();
+    createTaskSummary();
     createCustomers();
     createBoard();
 
