@@ -2194,8 +2194,10 @@
 
 
     const ENERGY_REGEN_BASE_MS = 2 * 60 * 1000;
+    const SAVE_KEY = "miniMergeCafeSave";
     let energyRegenMs = ENERGY_REGEN_BASE_MS;
     let nextEnergySeconds = 0;
+    let loadedExistingSave = false;
 
     function getEnergyRegenMs() {
       return fameRank >= 10 ? 90 * 1000 : ENERGY_REGEN_BASE_MS;
@@ -2204,19 +2206,21 @@
     function applyOfflineEnergyRegen() {
       energyRegenMs = getEnergyRegenMs();
       const now = Date.now();
-      const savedEnergy = Number(localStorage.getItem("mmc_energy"));
-      const savedMaxEnergy = Number(localStorage.getItem("mmc_maxEnergy"));
-      const savedGiftStage = Number(localStorage.getItem("mmc_giftStage"));
-      const savedGiftTarget = Number(localStorage.getItem("mmc_giftTarget"));
 
-      if (!Number.isNaN(savedEnergy) && savedEnergy >= 0) energy = Math.min(savedEnergy, maxEnergy);
-      if (!localStorage.getItem("mmc_energyStart25_v1") && energy < 25) {
-        energy = 25;
-        localStorage.setItem("mmc_energyStart25_v1", "1");
+      // Legacy small energy keys are only imported when there is no full save.
+      // After SAVE_KEY exists, every new version continues from the same full save.
+      if (!loadedExistingSave) {
+        const savedEnergy = Number(localStorage.getItem("mmc_energy"));
+        const savedMaxEnergy = Number(localStorage.getItem("mmc_maxEnergy"));
+        const savedGiftStage = Number(localStorage.getItem("mmc_giftStage"));
+        const savedGiftTarget = Number(localStorage.getItem("mmc_giftTarget"));
+
+        if (!Number.isNaN(savedMaxEnergy) && savedMaxEnergy >= maxEnergy) maxEnergy = savedMaxEnergy;
+        if (!Number.isNaN(savedEnergy) && savedEnergy >= 0) energy = Math.min(savedEnergy, maxEnergy);
+        if (energy < 25) energy = 25;
+        if (!Number.isNaN(savedGiftStage) && savedGiftStage >= 0) giftStage = savedGiftStage;
+        if (!Number.isNaN(savedGiftTarget) && savedGiftTarget >= 3) giftTarget = savedGiftTarget;
       }
-      if (!Number.isNaN(savedMaxEnergy) && savedMaxEnergy >= maxEnergy) maxEnergy = savedMaxEnergy;
-      if (!Number.isNaN(savedGiftStage) && savedGiftStage >= 0) giftStage = savedGiftStage;
-      if (!Number.isNaN(savedGiftTarget) && savedGiftTarget >= 3) giftTarget = savedGiftTarget;
 
       let last = Number(localStorage.getItem("mmc_lastEnergyTime"));
       if (!last || Number.isNaN(last)) {
@@ -4087,6 +4091,170 @@
       }
     }
 
+    function cloneSimple(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
+
+    function serializeCustomers() {
+      return customers.map(c => ({
+        profileId: c.profile && c.profile.id ? c.profile.id : "luna",
+        orders: Array.isArray(c.orders) ? c.orders.slice() : [],
+        givesPart: !!c.givesPart
+      }));
+    }
+
+    function restoreCustomers(savedCustomers) {
+      if (!Array.isArray(savedCustomers)) return [];
+      return savedCustomers.map(c => {
+        const profile = storyProfiles.find(p => p.id === c.profileId) || storyProfiles[0];
+        const orders = Array.isArray(c.orders) ? c.orders.filter(i => items[i]) : [];
+        return { profile, orders: orders.length ? orders : generateUniqueOrders(profile), givesPart: !!c.givesPart };
+      }).filter(Boolean);
+    }
+
+    function serializeStories() {
+      return storyProfiles.map(p => ({ id: p.id, visits: p.visits || 0, unlocked: p.unlocked || 0 }));
+    }
+
+    function restoreStories(savedStories) {
+      if (!Array.isArray(savedStories)) return;
+      savedStories.forEach(s => {
+        const p = storyProfiles.find(x => x.id === s.id);
+        if (!p) return;
+        p.visits = Math.max(0, Number(s.visits) || 0);
+        p.unlocked = Math.max(0, Math.min(3, Number(s.unlocked) || 0));
+      });
+    }
+
+    function mergeTaskState(target, saved) {
+      if (!saved || typeof saved !== "object") return;
+      Object.keys(target).forEach(k => {
+        if (!saved[k]) return;
+        target[k].value = Number(saved[k].value) || 0;
+        target[k].claimed = !!saved[k].claimed;
+      });
+    }
+
+    function saveGame() {
+      try {
+        const data = {
+          version: 5,
+          savedAt: Date.now(),
+          coins, gems, parts, energy, maxEnergy, cafeLevel, famePoints, fameRank, totalServed, customerSlots,
+          board: cloneSimple(board),
+          customers: serializeCustomers(),
+          storyProgress: serializeStories(),
+          unlockedMachines: cloneSimple(unlockedMachines),
+          machineLevels: cloneSimple(machineLevels),
+          discoveredLevel: cloneSimple(discoveredLevel),
+          researchCost: cloneSimple(researchCost),
+          giftProgress, giftStage, giftTarget, giftReady, ordersSinceLastPart,
+          recentOrderKeys: recentOrderKeys.slice(),
+          recentOrderChains: recentOrderChains.slice(),
+          daily: cloneSimple(daily),
+          achievements: cloneSimple(achievements),
+          lastEnergyTime: Number(localStorage.getItem("mmc_lastEnergyTime")) || Date.now(),
+          mergeDropDate: localStorage.getItem("mmc_mergeDropDate") || todayKey(),
+          mergeDropPlays: Number(localStorage.getItem("mmc_mergeDropPlays")) || 0
+        };
+        localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+      } catch(e) {}
+    }
+
+    function loadGame() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("reset") === "1") {
+          localStorage.removeItem(SAVE_KEY);
+          localStorage.removeItem("mmc_lastEnergyTime");
+          localStorage.removeItem("mmc_energy");
+          localStorage.removeItem("mmc_maxEnergy");
+          localStorage.removeItem("mmc_giftStage");
+          localStorage.removeItem("mmc_giftTarget");
+          localStorage.removeItem("mmc_mergeDropDate");
+          localStorage.removeItem("mmc_mergeDropPlays");
+          return false;
+        }
+
+        const raw = localStorage.getItem(SAVE_KEY);
+        if (!raw) return false;
+        const data = JSON.parse(raw);
+        if (!data || typeof data !== "object") return false;
+
+        coins = Number(data.coins) || 0;
+        gems = Number.isFinite(Number(data.gems)) ? Number(data.gems) : 25;
+        parts = Number(data.parts) || 0;
+        maxEnergy = Math.max(25, Number(data.maxEnergy) || 100);
+        energy = Math.max(0, Math.min(maxEnergy, Number.isFinite(Number(data.energy)) ? Number(data.energy) : 25));
+        cafeLevel = Number(data.cafeLevel) || 1;
+        famePoints = Number(data.famePoints) || 0;
+        fameRank = Math.max(0, Math.min(fameRanks.length - 1, Number(data.fameRank) || 0));
+        totalServed = Number(data.totalServed) || 0;
+        customerSlots = Math.max(3, Math.min(MAX_CUSTOMER_SLOTS, Number(data.customerSlots) || 3));
+
+        if (Array.isArray(data.board) && data.board.length === boardSize) board = data.board;
+        if (data.unlockedMachines) Object.assign(unlockedMachines, data.unlockedMachines);
+        if (data.machineLevels) Object.assign(machineLevels, data.machineLevels);
+        if (data.discoveredLevel) Object.assign(discoveredLevel, data.discoveredLevel);
+        if (data.researchCost) Object.assign(researchCost, data.researchCost);
+
+        restoreStories(data.storyProgress);
+        giftProgress = Number(data.giftProgress) || 0;
+        giftStage = Number(data.giftStage) || 0;
+        giftTarget = Math.max(3, Number(data.giftTarget) || 3);
+        giftReady = !!data.giftReady;
+        ordersSinceLastPart = Number(data.ordersSinceLastPart) || 0;
+        recentOrderKeys = Array.isArray(data.recentOrderKeys) ? data.recentOrderKeys.slice(-10) : [];
+        recentOrderChains = Array.isArray(data.recentOrderChains) ? data.recentOrderChains.slice(-10) : [];
+        mergeTaskState(daily, data.daily);
+        mergeTaskState(achievements, data.achievements);
+
+        customers = restoreCustomers(data.customers);
+        refillCustomerDeck();
+        while (customers.length < customerSlots) customers.push(newCustomer());
+        if (customers.length > customerSlots) customers = customers.slice(0, customerSlots);
+
+        if (data.lastEnergyTime) localStorage.setItem("mmc_lastEnergyTime", String(data.lastEnergyTime));
+        if (data.mergeDropDate) localStorage.setItem("mmc_mergeDropDate", String(data.mergeDropDate));
+        if (Number.isFinite(Number(data.mergeDropPlays))) localStorage.setItem("mmc_mergeDropPlays", String(data.mergeDropPlays));
+
+        loadedExistingSave = true;
+        return true;
+      } catch(e) {
+        console.warn("Save load failed", e);
+        return false;
+      }
+    }
+
+    function startNewGame() {
+      coins = 0;
+      gems = 25;
+      parts = 0;
+      energy = 25;
+      maxEnergy = 100;
+      cafeLevel = 1;
+      famePoints = 0;
+      fameRank = 0;
+      totalServed = 0;
+      customerSlots = 3;
+      board = Array(boardSize).fill(null);
+      board[5] = { machine: "drink" };
+      board[24] = { machine: "dessert" };
+      customers = [];
+      giftProgress = 0;
+      giftStage = 0;
+      giftTarget = 3;
+      giftReady = false;
+      ordersSinceLastPart = 0;
+      unlockedMachines = { drink: true, dessert: true, bakery: false, tea: false, juice: false, ice: false };
+      machineLevels = { drink: 1, dessert: 1, bakery: 1, tea: 1, juice: 1, ice: 1 };
+      discoveredLevel = { drink: 3, dessert: 3, bakery: 2, tea: 2, juice: 2, ice: 2 };
+      researchCost = { drink: 120, dessert: 120, bakery: 150, tea: 170, juice: 180, ice: 200 };
+      storyProfiles.forEach(p => { p.visits = 0; p.unlocked = 0; });
+      localStorage.setItem("mmc_lastEnergyTime", String(Date.now()));
+      setupCustomers();
+    }
+
     function updateAll() {
       cafeLevel = fameRank + 1;
       document.getElementById("coinsText").textContent = "🪙 " + coins;
@@ -4096,6 +4264,7 @@
       updateEnergyHomeTimer();
       giftReady = giftProgress >= giftTarget;
       persistEnergyState();
+      saveGame();
       createBoard();
       createCustomers();
       updateAchievements();
@@ -4103,15 +4272,13 @@
 
     document.addEventListener("dragstart", e => e.preventDefault());
 
+    const hadSave = loadGame();
+    if (!hadSave) startNewGame();
     applyOfflineEnergyRegen();
     loadMergeDropUsage();
-    setupCustomers();
     updateAll();
     setInterval(tickEnergyRegen, 1000);
-    generateItem("drink");
-    generateItem("dessert");
-    generateItem("drink");
-    setMsg("Merge, discover recipes, unlock machines and grow your cafe!");
+    setMsg(hadSave ? "Welcome back! Your cafe progress was loaded." : "Welcome! Start with 25 energy and grow your cafe!");
   </script>
 </body>
 </html>
