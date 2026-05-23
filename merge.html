@@ -3002,7 +3002,114 @@
       .orders-section .serve-btn{width:120px!important;height:26px!important;min-height:26px!important;max-height:26px!important;font-size:11.5px!important;}
     }
 
-</style>
+
+    /* PATCH 130 SAFE: order info tap, ready checks, and final anti-overflow polish */
+    .orders-section{
+      height:278px!important;
+      min-height:278px!important;
+      max-height:278px!important;
+      overflow:hidden!important;
+      padding-top:10px!important;
+      padding-bottom:8px!important;
+    }
+
+    .customers{
+      height:232px!important;
+      min-height:232px!important;
+      max-height:232px!important;
+      overflow-x:auto!important;
+      overflow-y:hidden!important;
+      scroll-behavior:smooth!important;
+      padding-bottom:4px!important;
+    }
+
+    .orders-section .customer-card{
+      height:224px!important;
+      min-height:224px!important;
+      max-height:224px!important;
+      grid-template-rows:101px 62px 23px 28px!important;
+      overflow:hidden!important;
+    }
+
+    .orders-section .order-block{
+      height:60px!important;
+      min-height:60px!important;
+      max-height:60px!important;
+      overflow:hidden!important;
+    }
+
+    .orders-section .serve-btn{
+      height:28px!important;
+      min-height:28px!important;
+      max-height:28px!important;
+      line-height:1!important;
+      overflow:hidden!important;
+    }
+
+    .order-info-btn{
+      appearance:none!important;
+      -webkit-appearance:none!important;
+      border:none!important;
+      background:transparent!important;
+      box-shadow:none!important;
+      cursor:pointer!important;
+      position:relative!important;
+      padding:0!important;
+      margin:0!important;
+      touch-action:manipulation!important;
+    }
+
+    .order-info-btn:active{
+      transform:scale(.96)!important;
+    }
+
+    .order-item-check{
+      position:absolute!important;
+      right:-1px!important;
+      top:-1px!important;
+      width:16px!important;
+      height:16px!important;
+      border-radius:50%!important;
+      background:#4caf7a!important;
+      color:white!important;
+      border:2px solid white!important;
+      font-size:10px!important;
+      line-height:12px!important;
+      display:flex!important;
+      align-items:center!important;
+      justify-content:center!important;
+      z-index:5!important;
+      box-shadow:0 2px 6px rgba(52,199,89,.22)!important;
+      pointer-events:none!important;
+    }
+
+    .orders-section .multi-order .order-item-check{
+      width:14px!important;
+      height:14px!important;
+      font-size:9px!important;
+      line-height:10px!important;
+    }
+
+    @media (max-width:380px){
+      .orders-section{
+        height:270px!important;
+        min-height:270px!important;
+        max-height:270px!important;
+      }
+      .customers{
+        height:224px!important;
+        min-height:224px!important;
+        max-height:224px!important;
+      }
+      .orders-section .customer-card{
+        height:216px!important;
+        min-height:216px!important;
+        max-height:216px!important;
+        grid-template-rows:98px 58px 22px 27px!important;
+      }
+    }
+
+  </style>
 </head>
 
 <body>
@@ -3108,7 +3215,15 @@
       { name: "Glass Cup Sundae", emoji: "🍧", chain: "ice", level: 3, img: "assets/items/ice_cream_line/03_glass_cup_sundae.png" },
       { name: "Dessert Parfait", emoji: "🍮", chain: "ice", level: 4, img: "assets/items/ice_cream_line/04_dessert_parfait.png" },
       { name: "Rainbow Shaved Ice", emoji: "🌈", chain: "ice", level: 5, img: "assets/items/ice_cream_line/05_rainbow_shaved_ice.png" },
-      { name: "Rainbow Fantasy Sundae", emoji: "✨", chain: "ice", level: 6, img: "assets/items/ice_cream_line/06_rainbow_fantasy_sundae.png" }
+      { name: "Rainbow Fantasy Sundae", emoji: "✨", chain: "ice", level: 6, img: "assets/items/ice_cream_line/06_rainbow_fantasy_sundae.png" },
+
+      { name: "Mocha", emoji: "🍫", chain: "drink", level: 7, img: "assets/items/coffee_line/05_mocha.png" },
+      { name: "Vanilla Frappe", emoji: "🥤", chain: "drink", level: 8, img: "assets/items/coffee_line/08_vanilla_frappe.png" },
+      { name: "Royal Coffee", emoji: "👑", chain: "drink", level: 9, img: "assets/items/coffee_line/09_royal_coffee.png" },
+
+      { name: "Donut", emoji: "🍩", chain: "dessert", level: 7, img: "assets/items/dessert_line/06_donut.png" },
+      { name: "Macarons", emoji: "🍬", chain: "dessert", level: 8, img: "assets/items/dessert_line/07_macarons.png" },
+      { name: "Chocolate Tart", emoji: "🍫", chain: "dessert", level: 9, img: "assets/items/dessert_line/09_chocolate_tart.png" }
     ];
 
     const chainStart = {
@@ -3327,21 +3442,39 @@
       }
     ];
 
+    function getChainLength(chain) {
+      return items.filter(item => item.chain === chain).reduce((max, item) => Math.max(max, item.level || 0), 0) || CHAIN_LENGTH;
+    }
+
+    function getChainIndexByLevel(chain, level) {
+      const idx = items.findIndex(item => item.chain === chain && item.level === level);
+      return idx >= 0 ? idx : chainStart[chain] + level - 1;
+    }
+
+    function getChainItems(chain) {
+      return items
+        .map((item, index) => ({ item, index }))
+        .filter(x => x.item.chain === chain)
+        .sort((a, b) => a.item.level - b.item.level)
+        .map(x => x.index);
+    }
+
     const mergeMap = {};
     Object.keys(chainStart).forEach(chain => {
-      const s = chainStart[chain];
-      for (let i = 0; i < CHAIN_LENGTH - 1; i++) {
-        mergeMap[s + i] = s + i + 1;
+      const chainItems = getChainItems(chain);
+      for (let i = 0; i < chainItems.length - 1; i++) {
+        mergeMap[chainItems[i]] = chainItems[i + 1];
       }
     });
 
     function chainEnd(chain) {
-      return chainStart[chain] + CHAIN_LENGTH - 1;
+      const chainItems = getChainItems(chain);
+      return chainItems[chainItems.length - 1];
     }
 
     function isMaxItem(itemIndex) {
       const item = items[itemIndex];
-      return item && item.level >= CHAIN_LENGTH;
+      return item && item.level >= getChainLength(item.chain);
     }
 
     const boardSize = 30;
@@ -3370,6 +3503,7 @@
     let researchCost = { drink: 120, dessert: 120, bakery: 150, tea: 170, juice: 180, ice: 200 };
 
     let selectedIndex = null;
+    let infoPreviewItemIndex = null;
     let newItemIndex = null;
     let mergedItemIndex = null;
     let customers = [];
@@ -3739,9 +3873,10 @@
     }
 
     function getMachineEmoji(type) {
-      const lvl = Math.min(machineLevels[type], CHAIN_LENGTH);
-      const s = chainStart[machineDefs[type].chain];
-      return items[s + lvl - 1].emoji;
+      const chain = machineDefs[type].chain;
+      const lvl = Math.min(machineLevels[type], getChainLength(chain));
+      const itemIndex = getChainIndexByLevel(chain, lvl);
+      return items[itemIndex] ? items[itemIndex].emoji : machineDefs[type].emoji;
     }
 
     function pointerDown(e) {
@@ -3886,6 +4021,7 @@
     }
 
     function handleBoardTap(index) {
+      infoPreviewItemIndex = null;
       const data = board[index];
 
       if (data && data.machine && selectedIndex === null) {
@@ -3994,8 +4130,11 @@
         return;
       }
 
+      const wasFullEnergy = energy >= maxEnergy;
       energy--;
-      if (energy < maxEnergy) localStorage.setItem("mmc_lastEnergyTime", String(Date.now()));
+      if (energy < maxEnergy && (wasFullEnergy || !localStorage.getItem("mmc_lastEnergyTime"))) {
+        localStorage.setItem("mmc_lastEnergyTime", String(Date.now()));
+      }
       const slot = empty[Math.floor(Math.random() * empty.length)];
       const item = getMachineItem(type);
       let luckyChance = 0.08;
@@ -4013,27 +4152,30 @@
 
     function getMachineItem(type) {
       const chain = machineDefs[type].chain;
-      const start = chainStart[chain];
-      const maxLevel = Math.min(machineLevels[type], discoveredLevel[chain], CHAIN_LENGTH);
+      const maxLevel = Math.min(machineLevels[type], discoveredLevel[chain], getChainLength(chain));
 
-      if (maxLevel <= 1) return start;
+      if (maxLevel <= 1) return getChainIndexByLevel(chain, 1);
 
       const weights = [];
-      for (let i = 0; i < maxLevel; i++) {
-        weights.push(Math.pow(0.55, i));
+      for (let level = 1; level <= maxLevel; level++) {
+        weights.push({ itemIndex: getChainIndexByLevel(chain, level), weight: Math.pow(0.55, level - 1) });
       }
 
-      const total = weights.reduce((a, b) => a + b, 0);
+      const total = weights.reduce((sum, x) => sum + x.weight, 0);
       let r = Math.random() * total;
-      for (let i = 0; i < weights.length; i++) {
-        r -= weights[i];
-        if (r <= 0) return start + i;
+      for (const x of weights) {
+        r -= x.weight;
+        if (r <= 0) return x.itemIndex;
       }
 
-      return start + maxLevel - 1;
+      return getChainIndexByLevel(chain, maxLevel);
     }
 
     function createCustomers() {
+      const previousFirstId = customers[0] && customers[0].profile ? customers[0].profile.id : "";
+      customers.sort((a, b) => Number(isCustomerReady(b)) - Number(isCustomerReady(a)));
+      const newFirstId = customers[0] && customers[0].profile ? customers[0].profile.id : "";
+
       customersEl.innerHTML = "";
 
       customers.forEach((c, index) => {
@@ -4070,10 +4212,25 @@
 
         customersEl.appendChild(card);
       });
+
+      if (newFirstId && newFirstId !== previousFirstId && isCustomerReady(customers[0])) {
+        requestAnimationFrame(() => {
+          customersEl.scrollTo({ left: 0, behavior: "smooth" });
+        });
+      }
+    }
+
+    function orderItemReady(itemIndex) {
+      return board.some(x => x && x.item === itemIndex);
     }
 
     function orderEmojiText(orderArr) {
-      return orderArr.map(i => `<span class="order-slot">${itemImageHTML(i, "order-icon-img")}</span>`).join("");
+      return orderArr.map(i => `
+        <button class="order-slot order-info-btn ${orderItemReady(i) ? "order-slot-ready" : ""}" type="button" onclick="openOrderItemInfo(${i}); event.stopPropagation();">
+          ${itemImageHTML(i, "order-icon-img")}
+          ${orderItemReady(i) ? `<span class="order-item-check">✓</span>` : ""}
+        </button>
+      `).join("");
     }
 
     function orderNameText(orderArr) {
@@ -4231,7 +4388,7 @@
           weight = lvl <= 2 ? 1 : lvl === 3 ? 2 : lvl === 4 ? 5 : lvl === 5 ? 7 : 8;
         }
 
-        if (lvl === CHAIN_LENGTH && progress >= 6) weight += 5;
+        if (lvl === getChainLength(items[itemIndex].chain) && progress >= 6) weight += 5;
         for (let i = 0; i < Math.max(1, weight); i++) weightedItems.push(itemIndex);
       });
 
@@ -4255,12 +4412,11 @@
 
       Object.keys(chainStart).forEach(chain => {
         if (!isChainAvailable(chain)) return;
-        const start = chainStart[chain];
-        const max = Math.min(discoveredLevel[chain], CHAIN_LENGTH);
+        const max = Math.min(discoveredLevel[chain], getChainLength(chain));
         groups[chain] = [];
 
         for (let lvl = 2; lvl <= max; lvl++) {
-          groups[chain].push(start + lvl - 1);
+          groups[chain].push(getChainIndexByLevel(chain, lvl));
         }
       });
 
@@ -4306,8 +4462,8 @@
 
     function getBaseReward(itemIndex) {
       const level = items[itemIndex].level;
-      const base = { 1: 8, 2: 20, 3: 45, 4: 85, 5: 140, 6: 220 };
-      return base[level] || 15;
+      const base = { 1: 8, 2: 20, 3: 45, 4: 85, 5: 140, 6: 220, 7: 320, 8: 450, 9: 620 };
+      return base[level] || Math.max(15, level * 70);
     }
 
     function getCustomerReward(c) {
@@ -4633,12 +4789,13 @@
       const label = chainLabel(chain);
       const level = discoveredLevel[chain];
 
-      if (level >= CHAIN_LENGTH) {
+      if (level >= getChainLength(chain)) {
         return `<button class="green-btn" disabled>${label} Research Complete ✓</button>`;
       }
 
-      const nextItem = items[chainStart[chain] + level];
-      return `<button class="blue-btn" onclick="doResearch('${chain}'); refreshOpenSheet();">${label} Research - ${researchCost[chain]} 🪙<br>Discover: ${itemImageHTML(chainStart[chain] + level, "order-icon-img")} ${nextItem.name}</button>`;
+      const nextIndex = getChainIndexByLevel(chain, level + 1);
+      const nextItem = items[nextIndex];
+      return `<button class="blue-btn" onclick="doResearch('${chain}'); refreshOpenSheet();">${label} Research - ${researchCost[chain]} 🪙<br>Discover: ${itemImageHTML(nextIndex, "order-icon-img")} ${nextItem.name}</button>`;
     }
 
     function chainLabel(chain) {
@@ -4652,7 +4809,7 @@
     }
 
     function doResearch(chain) {
-      if (discoveredLevel[chain] >= CHAIN_LENGTH) {
+      if (discoveredLevel[chain] >= getChainLength(chain)) {
         setMsg("All recipes already discovered.");
         return;
       }
@@ -4669,7 +4826,7 @@
       discoveredLevel[chain]++;
       researchCost[chain] += 80;
 
-      const itemIndex = chainStart[chain] + oldLevel;
+      const itemIndex = getChainIndexByLevel(chain, oldLevel + 1);
       const item = items[itemIndex];
 
       daily.discover.value++;
@@ -5049,9 +5206,9 @@
     function randomMergeDropItem() {
       const openChains = Object.keys(unlockedMachines).filter(ch => unlockedMachines[ch]);
       const chain = openChains[Math.floor(Math.random() * openChains.length)] || "drink";
-      const maxLvl = Math.min(discoveredLevel[chain] || 2, 4);
-      const lvl = Math.floor(Math.random() * maxLvl);
-      return chainStart[chain] + lvl;
+      const maxLvl = Math.min(discoveredLevel[chain] || 2, 4, getChainLength(chain));
+      const lvl = 1 + Math.floor(Math.random() * maxLvl);
+      return getChainIndexByLevel(chain, lvl);
     }
 
     function spawnMergeDropPiece() {
@@ -5197,13 +5354,41 @@
     });
 
     function openInfoPanel() {
+      infoPreviewItemIndex = null;
       if (selectedIndex === null || !board[selectedIndex]) {
         setMsg("Select an item or machine first, then tap Info.");
       }
       openSheet("info", null);
     }
 
+    function openOrderItemInfo(itemIndex) {
+      infoPreviewItemIndex = itemIndex;
+      selectedIndex = null;
+      openSheet("info", null);
+    }
+
     function renderInfoPanel() {
+      if (infoPreviewItemIndex !== null && items[infoPreviewItemIndex]) {
+        const item = items[infoPreviewItemIndex];
+        const chain = getChainItems(item.chain);
+        const nextIndex = mergeMap[infoPreviewItemIndex];
+
+        return `
+          <div class="info-visual-card">
+            <div class="info-main-visual">${itemImageHTML(infoPreviewItemIndex, "info-item-img")}</div>
+            <div class="info-title-big">${item.name}</div>
+            <div class="info-chain-row">
+              ${chain.map(i => `<div class="info-chain-step ${i === infoPreviewItemIndex ? "active" : ""}">${itemImageTag(i)}<span>${items[i].name}</span></div>`).join("")}
+            </div>
+            <div class="info-mini-grid">
+              <div class="info-mini-pill">Level ${item.level}</div>
+              <div class="info-mini-pill">${nextIndex !== undefined ? "Next: " + items[nextIndex].name : "Max Level ⭐"}</div>
+              <div class="info-mini-pill">${item.level <= discoveredLevel[item.chain] ? "Discovered ✓" : "Locked 🔒"}</div>
+              <div class="info-mini-pill">Customer Order</div>
+            </div>
+          </div>`;
+      }
+
       if (selectedIndex === null || !board[selectedIndex]) {
         return `
           <div class="info-visual-card">
@@ -5224,7 +5409,7 @@
         const lvl = machineLevels[type];
         const cost = upgradeCost(type);
         const chain = machineDefs[type].chain;
-        const production = getChainItems(chain).slice(0, Math.min(lvl, discoveredLevel[chain], CHAIN_LENGTH));
+        const production = getChainItems(chain).slice(0, Math.min(lvl, discoveredLevel[chain], getChainLength(chain)));
         return `
           <div class="info-visual-card">
             <div class="info-main-visual">${machineImageHTML(type, "info-machine-img")}</div>
@@ -5234,11 +5419,11 @@
             </div>
             <div class="info-mini-grid">
               <div class="info-mini-pill">Lv. ${lvl}</div>
-              <div class="info-mini-pill">${lvl >= CHAIN_LENGTH ? "Max Level" : cost + " 🔧 Upgrade"}</div>
+              <div class="info-mini-pill">${lvl >= getChainLength(chain) ? "Max Level" : cost + " 🔧 Upgrade"}</div>
               <div class="info-mini-pill">Tap twice to produce</div>
               <div class="info-mini-pill">Drag to move</div>
             </div>
-            <button class="${type === "drink" ? "blue-btn" : "orange-btn"}" onclick="upgradeMachine('${type}'); refreshOpenSheet();" ${lvl >= CHAIN_LENGTH ? "disabled" : ""}>${lvl >= CHAIN_LENGTH ? "Max Level" : "Upgrade Machine"}</button>
+            <button class="${type === "drink" ? "blue-btn" : "orange-btn"}" onclick="upgradeMachine('${type}'); refreshOpenSheet();" ${lvl >= getChainLength(chain) ? "disabled" : ""}>${lvl >= getChainLength(chain) ? "Max Level" : "Upgrade Machine"}</button>
           </div>`;
       }
 
@@ -5268,26 +5453,21 @@
       return `<img src="${item.img}" alt="${item.name}" draggable="false" onerror="this.outerHTML='${item.emoji}'">`;
     }
 
-    function getChainItems(chain) {
-      const s = chainStart[chain];
-      const arr = [];
-      for (let i = 0; i < CHAIN_LENGTH; i++) arr.push(s + i);
-      return arr;
-    }
-
     function getMachineProductionText(type) {
       const chain = machineDefs[type].chain;
-      const start = chainStart[chain];
-      const max = Math.min(machineLevels[type], discoveredLevel[chain], CHAIN_LENGTH);
+      const max = Math.min(machineLevels[type], discoveredLevel[chain], getChainLength(chain));
       const names = [];
-      for (let i = 0; i < max; i++) names.push(itemImageHTML(start + i, "order-icon-img") + " " + items[start + i].name);
+      for (let lvl = 1; lvl <= max; lvl++) {
+        const itemIndex = getChainIndexByLevel(chain, lvl);
+        names.push(itemImageHTML(itemIndex, "order-icon-img") + " " + items[itemIndex].name);
+      }
       return names.join(", ");
     }
 
     function upgradeMachine(type) {
       const lvl = machineLevels[type];
 
-      if (lvl >= CHAIN_LENGTH) {
+      if (lvl >= getChainLength(machineDefs[type].chain)) {
         setMsg("Machine already max.");
         return;
       }
