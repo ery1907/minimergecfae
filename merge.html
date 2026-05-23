@@ -3424,86 +3424,168 @@
     }
 
 
-    /* PATCH 144: final order polish + shop grid + machine cards */
-    .orders-section{
-      height:258px!important;min-height:258px!important;max-height:258px!important;
-      padding:18px 10px 12px!important;overflow:hidden!important;
-    }
-    .orders-section .section-ribbon,.section-ribbon{
-      margin:-18px auto 8px!important;padding:7px 24px!important;line-height:1.05!important;
-      transform:none!important;top:0!important;z-index:20!important;
-    }
-    .customers{height:214px!important;min-height:214px!important;max-height:214px!important;align-items:flex-start!important;overflow-y:hidden!important;}
-    .orders-section .customer-card{
-      flex:0 0 134px!important;width:134px!important;min-width:134px!important;max-width:134px!important;
-      height:204px!important;min-height:204px!important;max-height:204px!important;
-      grid-template-rows:86px 56px 22px 28px!important;row-gap:3px!important;
-      padding:3px 2px 4px!important;overflow:hidden!important;
-    }
-    .orders-section .customer-card.ready::before{inset:1px 1px 1px!important;border-radius:26px!important;}
-    .orders-section .ready-check{
-      top:8px!important;right:15px!important;width:20px!important;height:20px!important;
-      font-size:12px!important;line-height:18px!important;border:2px solid #fff!important;
-      box-shadow:0 2px 6px rgba(52,199,89,.28)!important;z-index:30!important;
-    }
-    .orders-section .portrait-ring{width:68px!important;height:68px!important;min-width:68px!important;min-height:68px!important;max-width:68px!important;max-height:68px!important;}
-    .orders-section .customer-name{font-size:12px!important;height:17px!important;line-height:17px!important;}
-    .orders-section .order-block{
-      width:112px!important;height:54px!important;min-height:54px!important;max-height:54px!important;
-      padding:4px 8px!important;overflow:hidden!important;
-    }
-    .orders-section .single-order .order-slot{width:48px!important;height:48px!important;min-width:48px!important;max-width:48px!important;overflow:visible!important;}
-    .orders-section .single-order .order-icon-img{width:47px!important;height:47px!important;max-width:47px!important;max-height:47px!important;}
-    .orders-section .multi-order .order-slot{width:37px!important;height:37px!important;min-width:37px!important;max-width:37px!important;overflow:visible!important;}
-    .orders-section .multi-order .order-icon-img{width:36px!important;height:36px!important;max-width:36px!important;max-height:36px!important;}
-    .orders-section .order-item-check{
-      right:-2px!important;top:-2px!important;width:14px!important;height:14px!important;
-      font-size:8px!important;line-height:11px!important;border-width:1.5px!important;z-index:25!important;
-      box-shadow:0 1px 4px rgba(52,199,89,.24)!important;
-    }
-    .orders-section .multi-order .order-item-check{right:-1px!important;top:-1px!important;width:12px!important;height:12px!important;font-size:7px!important;line-height:9px!important;}
-    .orders-section .reward{height:22px!important;min-height:22px!important;max-height:22px!important;font-size:8px!important;gap:2px!important;}
-    .orders-section .reward span{height:18px!important;max-height:18px!important;padding:2px 4px!important;}
-    .orders-section .serve-btn{
-      width:108px!important;height:26px!important;min-height:26px!important;max-height:26px!important;
-      padding:0 8px!important;margin:0!important;border-radius:14px!important;font-size:11.5px!important;
-      line-height:23px!important;box-shadow:none!important;border:2px solid #328c1f!important;display:block!important;
-      align-self:center!important;justify-self:center!important;overflow:hidden!important;
-    }
-    .orders-section .serve-btn:disabled{background:#e8ddce!important;border-color:#c9b59b!important;color:#a48b72!important;box-shadow:none!important;}
-    .cell .mini-badge{width:15px!important;height:15px!important;font-size:8.5px!important;border-width:1px!important;top:2px!important;}
-    .cell .badge-lucky{left:2px!important;}
-    .cell .badge-star{left:50%!important;transform:translateX(-50%)!important;}
-    .cell .badge-ready{right:2px!important;}
 
-    .shop-section-title{font-size:14px;font-weight:900;color:#653719;margin:12px 0 7px;padding-left:2px;}
-    .shop-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:12px;}
-    .shop-tile{background:linear-gradient(180deg,#fff,#fff3e4);border:2px solid #f1c27d;border-radius:20px;padding:11px 8px;text-align:center;box-shadow:0 5px 12px rgba(90,56,37,.08);min-height:112px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:5px;}
-    .shop-tile-icon{font-size:30px;line-height:1;min-height:32px;display:flex;align-items:center;justify-content:center;}
-    .shop-tile-title{font-size:13px;font-weight:900;color:#653719;line-height:1.15;}
-    .shop-tile-cost{font-size:12px;font-weight:900;color:#8b5e34;}
-    .shop-tile button{width:100%;height:30px;border-radius:13px;color:white;font-size:11px;font-weight:900;}
-    .shop-buy-energy{background:linear-gradient(180deg,#78c943,#43a92c);border:2px solid #328c1f;}
-    .shop-buy-coin{background:linear-gradient(180deg,#ffb24a,#ff8c1a);border:2px solid #d96e00;}
-    .shop-buy-part{background:linear-gradient(180deg,#b28dff,#7c4dff);border:2px solid #5c35c9;}
-    .shop-buy-free{background:linear-gradient(180deg,#ffb24a,#ff8c1a);border:2px solid #d96e00;}
-    .machine-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
-    .machine-shop-card{background:linear-gradient(180deg,#fffaf4,#ffe8cf);border:2px solid #f1c27d;border-radius:20px;padding:9px;text-align:center;box-shadow:0 5px 12px rgba(90,56,37,.08);min-height:158px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:5px;}
-    .machine-shop-card.locked{opacity:.72;filter:saturate(.75);}
-    .machine-shop-card.owned{background:linear-gradient(180deg,#effff0,#fff8e8);border-color:#7edc82;}
-    .machine-shop-img .info-machine-img{width:82px!important;height:60px!important;margin:0 auto 2px!important;}
-    .machine-shop-name{font-size:12.5px;font-weight:900;color:#653719;line-height:1.12;min-height:28px;}
-    .machine-shop-meta{font-size:10.5px;font-weight:900;color:#8b5e34;line-height:1.2;min-height:24px;}
-    .machine-shop-btn{width:100%;height:30px;border-radius:13px;color:white;font-size:11px;font-weight:900;background:linear-gradient(180deg,#ffb24a,#ff8c1a);border:2px solid #d96e00;}
-    .machine-shop-btn:disabled{background:#e8ddce!important;border:2px solid #c9b59b!important;color:#a48b72!important;}
-
-    .machine-upgrade-card{background:linear-gradient(180deg,#fffaf4,#ffe8cf);border:2px solid #f1c27d;border-radius:22px;padding:12px;margin:8px 0;text-align:center;}
-    .machine-upgrade-hero .info-machine-img{width:136px!important;height:96px!important;margin:0 auto 4px!important;}
-    .machine-upgrade-title{font-size:18px;font-weight:900;color:#653719;margin:3px 0;}
-    .machine-upgrade-sub{font-size:13px;font-weight:900;color:#8b5e34;margin-bottom:8px;}
-    .machine-upgrade-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
-    .machine-upgrade-chip{background:#fff;border:2px solid #f1d3a5;border-radius:16px;padding:8px 5px;font-size:12px;font-weight:900;color:#6b4126;min-height:48px;display:flex;align-items:center;justify-content:center;}
-    @media(max-width:380px){.shop-grid,.machine-grid{gap:8px}.orders-section .customer-card{flex-basis:128px!important;width:128px!important;min-width:128px!important;max-width:128px!important}.orders-section .order-block{width:106px!important}.orders-section .serve-btn{width:104px!important}}
+    /* PATCH 145 FIXED: Secret Recipe + single order tick safe area */
+    .orders-section .single-order .order-slot{
+      overflow: visible !important;
+      padding: 2px !important;
+    }
+    .orders-section .single-order .order-item-check{
+      right: -4px !important;
+      top: -4px !important;
+      width: 16px !important;
+      height: 16px !important;
+      min-width: 16px !important;
+      min-height: 16px !important;
+      font-size: 9px !important;
+      border-width: 2px !important;
+      z-index: 30 !important;
+      line-height: 1 !important;
+      box-shadow: 0 2px 6px rgba(52,199,89,.28) !important;
+    }
+    .orders-section .multi-order .order-item-check{
+      right: -2px !important;
+      top: -2px !important;
+      width: 13px !important;
+      height: 13px !important;
+      min-width: 13px !important;
+      min-height: 13px !important;
+      font-size: 7px !important;
+      z-index: 30 !important;
+    }
+    .secret-hero{
+      background: linear-gradient(180deg,#fffaf3,#ffe8cf);
+      border: 2px solid #f1c27d;
+      border-radius: 24px;
+      padding: 13px;
+      margin-bottom: 12px;
+      box-shadow: 0 6px 14px rgba(90,56,37,.09);
+    }
+    .secret-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .secret-title{
+      font-size:20px;
+      font-weight:900;
+      color:#653719;
+    }
+    .secret-moves{
+      background:#fff8ef;
+      border:2px solid #f1d3a5;
+      border-radius:999px;
+      padding:7px 10px;
+      font-weight:900;
+      color:#6b4126;
+      white-space:nowrap;
+    }
+    .secret-board{
+      display:grid;
+      grid-template-columns:repeat(5, 1fr);
+      gap:7px;
+      background:rgba(90,56,37,.10);
+      border-radius:20px;
+      padding:8px;
+      margin:10px 0;
+    }
+    .secret-cell{
+      aspect-ratio:1/1;
+      border-radius:15px;
+      border:2px solid #e4af74;
+      background:linear-gradient(180deg,#fff2dc,#f7d2a4);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+      font-size:26px;
+      box-shadow: inset 0 3px 5px rgba(255,255,255,.58), inset 0 -3px 6px rgba(90,56,37,.09);
+    }
+    .secret-cell.empty{
+      opacity:.68;
+      background:linear-gradient(180deg,#fff6e8,#f7dfbd);
+    }
+    .secret-cell.selected{
+      outline:4px solid #ffb703;
+      box-shadow:0 0 14px rgba(255,183,3,.55), inset 0 3px 5px rgba(255,255,255,.58);
+    }
+    .secret-cell.locked{
+      background:linear-gradient(180deg,#e7f4da,#b7d996);
+      border-color:#8fbd6d;
+    }
+    .secret-icon{
+      font-size:27px;
+      filter:drop-shadow(0 2px 2px rgba(90,56,37,.15));
+    }
+    .secret-vines{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:30px;
+      background:rgba(93,145,71,.20);
+      color:#4d8a3d;
+    }
+    .secret-lvl{
+      position:absolute;
+      left:4px;
+      bottom:3px;
+      background:rgba(255,255,255,.88);
+      border:1px solid #f1d3a5;
+      border-radius:999px;
+      padding:1px 4px;
+      font-size:9px;
+      font-weight:900;
+      color:#6b4126;
+    }
+    .secret-progress{
+      display:flex;
+      gap:5px;
+      overflow-x:auto;
+      padding:4px 0 2px;
+      scrollbar-width:none;
+    }
+    .secret-progress::-webkit-scrollbar{display:none;}
+    .secret-step{
+      min-width:42px;
+      background:#fff;
+      border:2px solid #f1d3a5;
+      border-radius:14px;
+      padding:5px 3px;
+      text-align:center;
+      font-size:9px;
+      font-weight:900;
+      color:#7a4c2b;
+    }
+    .secret-step.done{
+      background:#fff8d9;
+      border-color:#ffb703;
+    }
+    .secret-reward-note{
+      background:#fff8ef;
+      border-radius:16px;
+      padding:9px;
+      font-size:12px;
+      font-weight:800;
+      line-height:1.35;
+      color:#6b4126;
+      margin-top:8px;
+    }
+    .secret-actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+      margin-top:8px;
+    }
+    @media(max-width:380px){
+      .secret-board{gap:5px;padding:6px;}
+      .secret-cell{border-radius:12px;font-size:23px;}
+      .secret-icon{font-size:24px;}
+    }
 
   </style>
 </head>
@@ -4552,7 +4634,7 @@
 
       const weights = [];
       for (let level = 1; level <= maxLevel; level++) {
-        weights.push({ itemIndex: getChainIndexByLevel(chain, level), weight: Math.pow(0.72, level - 1) });
+        weights.push({ itemIndex: getChainIndexByLevel(chain, level), weight: Math.pow(0.55, level - 1) });
       }
 
       const total = weights.reduce((sum, x) => sum + x.weight, 0);
@@ -4832,8 +4914,8 @@
     }
 
     function orderGivesPart() {
-      if (ordersSinceLastPart >= 12) return true;
-      return Math.random() < 0.035;
+      if (ordersSinceLastPart >= 7) return true;
+      return Math.random() < 0.10;
     }
 
     function isCustomerReady(c) {
@@ -5386,51 +5468,26 @@
       return `
         <div class="panel-card">
           <h3>💎 Gem Shop</h3>
+          <p>Spend gems on useful resources. Prototype Gem Pack stays free for testing now.</p>
           <p><b>Your gems:</b> 💎 ${gems}</p>
-
-          <div class="shop-section-title">⚡ Energy Packs</div>
-          <div class="shop-grid">
-            ${shopTile("⚡", "+10 Energy", "6 💎", "shop-buy-energy", "buyEnergyWithGems(10, 6); refreshOpenSheet();")}
-            ${shopTile("⚡", "+25 Energy", "14 💎", "shop-buy-energy", "buyEnergyWithGems(25, 14); refreshOpenSheet();")}
-          </div>
-
-          <div class="shop-section-title">🪙 Coin Packs</div>
-          <div class="shop-grid">
-            ${shopTile("🪙", "+150 Coins", "8 💎", "shop-buy-coin", "buyCoinsWithGems(150, 8); refreshOpenSheet();")}
-            ${shopTile("🪙", "+500 Coins", "22 💎", "shop-buy-coin", "buyCoinsWithGems(500, 22); refreshOpenSheet();")}
-          </div>
-
-          <div class="shop-section-title">🔧 Upgrade Parts</div>
-          <div class="shop-grid">
-            ${shopTile("🔧", "+3 Parts", "10 💎", "shop-buy-part", "buyPartsWithGems(3, 10); refreshOpenSheet();")}
-            ${shopTile("🔧", "+8 Parts", "24 💎", "shop-buy-part", "buyPartsWithGems(8, 24); refreshOpenSheet();")}
-          </div>
-
-          <div class="shop-section-title">🧪 Prototype</div>
-          <div class="shop-grid">
-            ${shopTile("💎", "+25 Gems", "Free test", "shop-buy-free", "prototypeBuyGems(); refreshOpenSheet();")}
-          </div>
+          <button class="green-btn" onclick="buyEnergyWithGems(10, 6); refreshOpenSheet();">Buy +10 Energy - 6 💎</button>
+          <button class="blue-btn" onclick="buyEnergyWithGems(25, 14); refreshOpenSheet();">Buy +25 Energy - 14 💎</button>
+          <button class="orange-btn" onclick="buyCoinsWithGems(150, 8); refreshOpenSheet();">Buy +150 Coins - 8 💎</button>
+          <button class="orange-btn" onclick="buyCoinsWithGems(500, 22); refreshOpenSheet();">Buy +500 Coins - 22 💎</button>
+          <button class="purple-btn" onclick="buyPartsWithGems(3, 10); refreshOpenSheet();">Buy +3 Parts - 10 💎</button>
+          <button class="purple-btn" onclick="buyPartsWithGems(8, 24); refreshOpenSheet();">Buy +8 Parts - 24 💎</button>
+          <button class="orange-btn" onclick="prototypeBuyGems(); refreshOpenSheet();">Prototype Gem Pack +25 💎</button>
+          <div class="info-note">Coin and part packs are balanced for testing and can be tuned later.</div>
         </div>
 
         <div class="panel-card">
-          <h3>🏪 Machine Shop</h3>
-          <p>Unlock new machines as your cafe fame grows.</p>
-          <div class="machine-grid">
-            ${renderMachineShop("bakery")}
-            ${renderMachineShop("tea")}
-            ${renderMachineShop("juice")}
-            ${renderMachineShop("ice")}
-          </div>
+          <h3>New Machines</h3>
+          <p>Unlock machines with gems as your cafe becomes more famous.</p>
+          ${renderMachineShop("bakery")}
+          ${renderMachineShop("tea")}
+          ${renderMachineShop("juice")}
+          ${renderMachineShop("ice")}
         </div>`;
-    }
-
-    function shopTile(icon, title, cost, cls, action) {
-      return `<div class="shop-tile">
-        <div class="shop-tile-icon">${icon}</div>
-        <div class="shop-tile-title">${title}</div>
-        <div class="shop-tile-cost">${cost}</div>
-        <button class="${cls}" onclick="${action}">Buy</button>
-      </div>`;
     }
 
     function buyCoinsWithGems(amount, cost) {
@@ -5453,25 +5510,14 @@
 
     function renderMachineShop(type) {
       const def = machineDefs[type];
-      const rankOk = fameRank >= def.unlockRank;
-      const gemOk = gems >= def.cost;
-      const reqName = fameRanks[def.unlockRank] ? fameRanks[def.unlockRank].name : "Future Rank";
 
       if (unlockedMachines[type]) {
-        return `<div class="machine-shop-card owned">
-          <div class="machine-shop-img">${machineImageHTML(type, "info-machine-img")}</div>
-          <div class="machine-shop-name">${def.name}</div>
-          <div class="machine-shop-meta">Owned ✓<br>Lv.${machineLevels[type]}</div>
-          <button class="machine-shop-btn" disabled>Unlocked</button>
-        </div>`;
+        return `<button class="green-btn" disabled>${def.emoji} ${def.name} Owned ✓</button>`;
       }
 
-      return `<div class="machine-shop-card ${rankOk ? "" : "locked"}">
-        <div class="machine-shop-img">${machineImageHTML(type, "info-machine-img")}</div>
-        <div class="machine-shop-name">${def.name}</div>
-        <div class="machine-shop-meta">Requires: ${reqName}<br>${def.cost} 💎</div>
-        <button class="machine-shop-btn" onclick="unlockMachine('${type}'); refreshOpenSheet();" ${rankOk && gemOk ? "" : "disabled"}>Unlock</button>
-      </div>`;
+      const rankOk = fameRank >= def.unlockRank;
+      const gemOk = gems >= def.cost;
+      return `<button class="orange-btn" onclick="unlockMachine('${type}'); refreshOpenSheet();" ${rankOk && gemOk ? "" : "disabled"}>${def.emoji} Unlock ${def.name} - ${def.cost} 💎<br>Requires: ${fameRanks[def.unlockRank].name}</button>`;
     }
 
     function unlockMachine(type) {
@@ -5976,20 +6022,15 @@
       const newLevel = machineLevels[type];
       const canMake = getChainIndexByLevel(chain, Math.min(newLevel, discoveredLevel[chain], getChainLength(chain)));
       const rewardHTML = `
-        <div class="machine-upgrade-card">
-          <div class="machine-upgrade-hero">${machineImageHTML(type, "info-machine-img")}</div>
-          <div class="machine-upgrade-title">${machineDefs[type].name} Lv.${newLevel}</div>
-          <div class="machine-upgrade-sub">Your machine is stronger now!</div>
-          <div class="machine-upgrade-grid">
-            <div class="machine-upgrade-chip">${itemImageHTML(canMake, "order-icon-img")} Better items</div>
-            <div class="machine-upgrade-chip">⚡ +10 Energy</div>
-            <div class="machine-upgrade-chip">⭐ +10 Fame</div>
-            <div class="machine-upgrade-chip">🔧 Next upgrade: ${upgradeCost(type)} parts</div>
-          </div>
+        <div class="rank-reward-icons">
+          <div class="rank-reward-chip">🔧 ${machineDefs[type].name} Lv.${newLevel}</div>
+          <div class="rank-reward-chip">${itemImageHTML(canMake, "order-icon-img")} Better production</div>
+          <div class="rank-reward-chip">⚡ +10 Energy</div>
+          <div class="rank-reward-chip">⭐ +10 Fame</div>
         </div>`;
 
       setMsg(machineDefs[type].name + " upgraded! +10 ⚡ +10 ⭐");
-      showGameModal("🔧", "Machine Upgraded!", "Level " + newLevel + " unlocked", rewardHTML);
+      showGameModal("🔧", "Machine Upgraded!", machineDefs[type].name + " Lv." + newLevel, rewardHTML);
       playSound("upgrade");
       updateAll();
       checkFameRankUp();
@@ -6364,6 +6405,244 @@
       updateAchievements();
     }
 
+
+
+    /* PATCH 145 FIXED: Secret Recipe permanent side progression */
+    const SECRET_SAVE_KEY = "miniMergeCafeSecretRecipe";
+    const SECRET_LEVELS = [
+      { name:"Recipe Note", icon:"📜" },
+      { name:"Vanilla Drop", icon:"🌼" },
+      { name:"Sugar Pearl", icon:"⚪" },
+      { name:"Golden Spoon", icon:"🥄" },
+      { name:"Magic Cream", icon:"🍦" },
+      { name:"Berry Charm", icon:"🍓" },
+      { name:"Honey Jar", icon:"🍯" },
+      { name:"Secret Dough", icon:"🥐" },
+      { name:"Crystal Glaze", icon:"💎" },
+      { name:"Royal Topping", icon:"👑" },
+      { name:"Master Mix", icon:"✨" },
+      { name:"Secret Recipe", icon:"📖" }
+    ];
+    const SECRET_BOARD_SIZE = 20;
+    let secretRecipe = { moves: 0, selected: null, maxReached: 1, board: [] };
+
+    function secretDefaultBoard() {
+      const b = Array(SECRET_BOARD_SIZE).fill(null);
+      b[0] = { level: 1, locked: false };
+      b[1] = { level: 1, locked: false };
+      b[5] = { level: 1, locked: true };
+      b[8] = { level: 1, locked: true };
+      b[12] = { level: 2, locked: true };
+      b[16] = { level: 2, locked: true };
+      return b;
+    }
+
+    function resetSecretRecipe() {
+      secretRecipe = { moves: 0, selected: null, maxReached: 1, board: secretDefaultBoard() };
+      saveSecretRecipe();
+    }
+
+    function normalizeSecretRecipe() {
+      if (!secretRecipe || typeof secretRecipe !== "object") resetSecretRecipe();
+      secretRecipe.moves = Math.max(0, Number(secretRecipe.moves) || 0);
+      secretRecipe.selected = null;
+      secretRecipe.maxReached = Math.max(1, Math.min(12, Number(secretRecipe.maxReached) || 1));
+      if (!Array.isArray(secretRecipe.board) || secretRecipe.board.length !== SECRET_BOARD_SIZE) {
+        secretRecipe.board = secretDefaultBoard();
+      }
+      secretRecipe.board = secretRecipe.board.map(x => {
+        if (!x) return null;
+        const lvl = Math.max(1, Math.min(12, Number(x.level) || 1));
+        return { level: lvl, locked: !!x.locked };
+      });
+    }
+
+    function loadSecretRecipe() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("reset") === "1") localStorage.removeItem(SECRET_SAVE_KEY);
+        const raw = localStorage.getItem(SECRET_SAVE_KEY);
+        if (raw) secretRecipe = JSON.parse(raw);
+        else secretRecipe = { moves: 0, selected: null, maxReached: 1, board: secretDefaultBoard() };
+      } catch(e) {
+        secretRecipe = { moves: 0, selected: null, maxReached: 1, board: secretDefaultBoard() };
+      }
+      normalizeSecretRecipe();
+      saveSecretRecipe();
+    }
+
+    function saveSecretRecipe() {
+      try { localStorage.setItem(SECRET_SAVE_KEY, JSON.stringify(secretRecipe)); } catch(e) {}
+    }
+
+    function secretOrderMoveReward(c) {
+      if (!c || !Array.isArray(c.orders)) return 1;
+      const totalLevels = c.orders.reduce((sum, i) => sum + ((items[i] && items[i].level) || 1), 0);
+      let moves = Math.ceil(totalLevels / 3);
+      if (c.orders.length > 1) moves += 1;
+      return Math.max(1, Math.min(5, moves));
+    }
+
+    function addSecretMoves(n) {
+      n = Math.max(0, Number(n) || 0);
+      if (!n) return;
+      secretRecipe.moves += n;
+      saveSecretRecipe();
+    }
+
+    function secretRewardForLevel(level) {
+      if (level < 6) return null;
+      const rewards = {
+        6: { coins: 40, energy: 3, gems: 0 },
+        7: { coins: 70, energy: 5, gems: 0 },
+        8: { coins: 110, energy: 7, gems: 0 },
+        9: { coins: 160, energy: 9, gems: 1 },
+        10: { coins: 230, energy: 12, gems: 2 },
+        11: { coins: 320, energy: 15, gems: 3 },
+        12: { coins: 500, energy: 25, gems: 6 }
+      };
+      return rewards[level] || null;
+    }
+
+    function grantSecretReward(level) {
+      const r = secretRewardForLevel(level);
+      if (!r) return;
+      coins += r.coins;
+      energy = Math.min(maxEnergy, energy + r.energy);
+      gems += r.gems;
+      const rewardText = `+${r.coins} 🪙 +${r.energy} ⚡` + (r.gems ? ` +${r.gems} 💎` : "");
+      if (level >= 12) {
+        showGameModal("📖", "Secret Recipe Complete!", SECRET_LEVELS[level - 1].name, rewardText);
+      } else {
+        showGameModal("🎁", "Secret Reward!", "Level " + level + " Merge", rewardText);
+      }
+    }
+
+    function renderSecretRecipePanel() {
+      normalizeSecretRecipe();
+      const best = secretRecipe.maxReached || 1;
+      const progress = SECRET_LEVELS.map((x, idx) => `<div class="secret-step ${idx + 1 <= best ? "done" : ""}"><div>${x.icon}</div><div>Lv.${idx + 1}</div></div>`).join("");
+      const boardHtml = secretRecipe.board.map((cell, idx) => {
+        if (!cell) {
+          return `<button class="secret-cell empty" onclick="secretCellClick(${idx})"><span style="font-size:18px;opacity:.55">+</span></button>`;
+        }
+        const def = SECRET_LEVELS[cell.level - 1];
+        return `<button class="secret-cell ${cell.locked ? "locked" : ""} ${secretRecipe.selected === idx ? "selected" : ""}" onclick="secretCellClick(${idx})">
+          <span class="secret-icon">${def.icon}</span>
+          ${cell.locked ? `<span class="secret-vines">🌿</span>` : ""}
+          <span class="secret-lvl">Lv.${cell.level}</span>
+        </button>`;
+      }).join("");
+      return `
+        <div class="secret-hero">
+          <div class="secret-top">
+            <div class="secret-title">📖 Secret Recipe</div>
+            <div class="secret-moves">🎟️ ${secretRecipe.moves} moves</div>
+          </div>
+          <div class="secret-progress">${progress}</div>
+          <div class="secret-reward-note">Serve main orders to earn moves. Harder and double orders give more moves. Merge matching Secret Recipe items; locked vine items open when merged with the same open item.</div>
+          <div class="secret-board">${boardHtml}</div>
+          <div class="secret-actions">
+            <button class="green-btn" onclick="secretSpawnItem(); refreshOpenSheet();">Use 1 Move</button>
+            <button class="orange-btn" onclick="secretRecipe.selected=null; saveSecretRecipe(); refreshOpenSheet();">Cancel Select</button>
+          </div>
+          <div class="secret-reward-note">Rewards start after Lv.6 merges. Lv.9+ also gives gems.</div>
+        </div>`;
+    }
+
+    function secretSpawnItem() {
+      normalizeSecretRecipe();
+      if (secretRecipe.moves <= 0) { setMsg("Serve orders to earn Secret Recipe moves."); playSound("error"); return; }
+      const empty = secretRecipe.board.map((x, i) => x ? -1 : i).filter(i => i >= 0);
+      if (!empty.length) { setMsg("Secret Recipe area is full. Merge items first."); playSound("error"); return; }
+      const idx = empty[Math.floor(Math.random() * empty.length)];
+      secretRecipe.board[idx] = { level: 1, locked: false };
+      secretRecipe.moves--;
+      secretRecipe.selected = idx;
+      setMsg("Secret Recipe item added.");
+      playSound("upgrade");
+      saveSecretRecipe();
+    }
+
+    function secretCellClick(idx) {
+      normalizeSecretRecipe();
+      const cell = secretRecipe.board[idx];
+      if (!cell) { secretSpawnItem(); refreshOpenSheet(); return; }
+      if (secretRecipe.selected === null || secretRecipe.selected === undefined) {
+        if (cell.locked) { setMsg("Merge this vine item with the same open item to unlock it."); playSound("error"); return; }
+        secretRecipe.selected = idx;
+        saveSecretRecipe();
+        refreshOpenSheet();
+        return;
+      }
+      const from = secretRecipe.selected;
+      if (from === idx) {
+        secretRecipe.selected = null;
+        saveSecretRecipe();
+        refreshOpenSheet();
+        return;
+      }
+      const a = secretRecipe.board[from];
+      const b = secretRecipe.board[idx];
+      if (!a || !b || a.level !== b.level || (a.locked && b.locked) || a.level >= 12) {
+        setMsg("Secret Recipe needs two same-level items. One can be locked.");
+        playSound("error");
+        secretRecipe.selected = null;
+        saveSecretRecipe();
+        refreshOpenSheet();
+        return;
+      }
+      const newLevel = Math.min(12, a.level + 1);
+      const target = b.locked ? idx : from;
+      const remove = target === idx ? from : idx;
+      secretRecipe.board[target] = { level: newLevel, locked: false };
+      secretRecipe.board[remove] = null;
+      secretRecipe.selected = target;
+      secretRecipe.maxReached = Math.max(secretRecipe.maxReached, newLevel);
+      setMsg("Secret Recipe Lv." + newLevel + " created!");
+      playSound("merge");
+      grantSecretReward(newLevel);
+      saveSecretRecipe();
+      updateAll();
+      refreshOpenSheet();
+    }
+
+    const __mmcOldRenderGiftPanel = renderGiftPanel;
+    renderGiftPanel = function() {
+      return __mmcOldRenderGiftPanel() + `
+        <div class="panel-card">
+          <h3>📖 Secret Recipe</h3>
+          <p>Permanent side progress. Earn moves from served orders and merge up to Level 12.</p>
+          <p><b>Moves:</b> 🎟️ ${secretRecipe.moves || 0} &nbsp; <b>Best:</b> Lv.${secretRecipe.maxReached || 1}</p>
+          <button class="purple-btn" onclick="openSheet('secret')">Open Secret Recipe</button>
+        </div>`;
+    };
+
+    const __mmcOldRefreshOpenSheet = refreshOpenSheet;
+    refreshOpenSheet = function() {
+      const sheet = document.getElementById("sheet");
+      if (sheet.dataset.type === "secret") {
+        document.getElementById("sheetTitle").textContent = "📖 Secret Recipe";
+        document.getElementById("sheetContent").innerHTML = renderSecretRecipePanel();
+        return;
+      }
+      __mmcOldRefreshOpenSheet();
+    };
+
+    const __mmcOldServeCustomer = serveCustomer;
+    serveCustomer = function(index) {
+      const c = customers[index];
+      const readyBefore = c && isCustomerReady(c);
+      const secretMoves = readyBefore ? secretOrderMoveReward(c) : 0;
+      __mmcOldServeCustomer(index);
+      if (readyBefore && secretMoves > 0) {
+        addSecretMoves(secretMoves);
+        setMsg("Served! Secret Recipe +" + secretMoves + " move" + (secretMoves > 1 ? "s" : "") + ".");
+        if (document.getElementById("sheet").classList.contains("show")) refreshOpenSheet();
+      }
+    };
+
+
     document.addEventListener("dragstart", e => e.preventDefault());
 
     const hadSave = loadGame();
@@ -6371,6 +6650,7 @@
     applyOfflineEnergyRegen();
     loadMergeDropUsage();
     resetDailyTasksIfNeeded();
+    loadSecretRecipe();
     updateAll();
     setInterval(tickEnergyRegen, 1000);
     setMsg(hadSave ? "Welcome back! Your cafe progress was loaded." : "Welcome! Start with 25 energy and grow your cafe!");
