@@ -3706,6 +3706,184 @@
       .reward.reward-grid span { font-size: 8px !important; }
     }
 
+
+
+    /* PATCH 147: Secret Recipe full-screen mode */
+    .secret-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(255,248,217,.8), transparent 28%),
+        radial-gradient(circle at 86% 20%, rgba(255,210,220,.65), transparent 30%),
+        linear-gradient(180deg, #fff3e8, #ffdcbf);
+      color: #5a3825;
+      display: none;
+      overflow-y: auto;
+      padding: 12px 10px 92px;
+    }
+
+    .secret-screen.show { display: block; }
+
+    .secret-screen-inner {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .secret-full-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.88);
+      border: 2px solid #f4cf9c;
+      border-radius: 24px;
+      padding: 10px;
+      box-shadow: 0 8px 18px rgba(90,56,37,.12);
+      margin-bottom: 10px;
+    }
+
+    .secret-back-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      background: linear-gradient(180deg,#fff,#fff1d9);
+      border: 2px solid #f1c27d;
+      color: #5a3825;
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .secret-full-title {
+      flex: 1;
+      font-size: 22px;
+      font-weight: 900;
+      color: #653719;
+      text-align: center;
+    }
+
+    .secret-full-moves {
+      min-width: 86px;
+      text-align: center;
+      border-radius: 16px;
+      background: #fff8ef;
+      border: 2px solid #f1c27d;
+      padding: 8px 6px;
+      font-weight: 900;
+      color: #6b4126;
+      white-space: nowrap;
+    }
+
+    .secret-full-card {
+      background: rgba(255,255,255,.86);
+      border: 2px solid #f4cf9c;
+      border-radius: 26px;
+      padding: 10px;
+      box-shadow: 0 8px 18px rgba(90,56,37,.10);
+      margin-bottom: 10px;
+    }
+
+    .secret-full-board {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: 5px;
+      background: rgba(90,56,37,.13);
+      border: 3px solid #d69456;
+      border-radius: 22px;
+      padding: 7px;
+      touch-action: none;
+    }
+
+    .secret-full-board .secret-cell {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      min-width: 0;
+      border-radius: 13px;
+      font-size: 22px;
+      padding: 0;
+      border: 2px solid #e4af74;
+      background: linear-gradient(180deg,#fff4df,#f6d3a5);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    .secret-full-board .secret-cell.locked {
+      background: linear-gradient(180deg,#d9c8a9,#9f845c);
+      border-color: #7e684b;
+    }
+
+    .secret-full-board .secret-cell.empty {
+      background: rgba(255,255,255,.45);
+      border-style: dashed;
+    }
+
+    .secret-full-board .secret-cell.selected {
+      outline: 4px solid #ffb703;
+      box-shadow: 0 0 14px rgba(255,183,3,.7);
+    }
+
+    .secret-full-board .secret-icon {
+      font-size: 23px;
+      line-height: 1;
+      filter: drop-shadow(0 2px 2px rgba(90,56,37,.16));
+    }
+
+    .secret-full-board .secret-vines {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+      background: rgba(70,92,45,.18);
+    }
+
+    .secret-full-board .secret-lvl {
+      position: absolute;
+      left: 2px;
+      right: 2px;
+      bottom: 1px;
+      font-size: 7px;
+      font-weight: 900;
+      color: #5a3825;
+      text-align: center;
+      background: rgba(255,248,239,.82);
+      border-radius: 8px;
+    }
+
+    .secret-full-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .secret-full-note {
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.35;
+      color: #7a4c2b;
+      background: rgba(255,248,239,.78);
+      border: 1px solid #f1d3a5;
+      border-radius: 16px;
+      padding: 8px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 380px) {
+      .secret-screen { padding-left: 7px; padding-right: 7px; }
+      .secret-full-board { gap: 4px; padding: 5px; }
+      .secret-full-board .secret-cell { border-radius: 11px; }
+      .secret-full-board .secret-icon { font-size: 19px; }
+      .secret-full-board .secret-vines { font-size: 21px; }
+      .secret-full-title { font-size: 19px; }
+      .secret-full-moves { min-width: 74px; font-size: 12px; }
+    }
+
   </style>
 </head>
 
@@ -3748,7 +3926,7 @@
   <div class="bottom-nav">
     <button class="nav-btn active" onclick="openSheet('goals', this)">🎯<span>Goals</span></button>
     <button class="nav-btn" onclick="openSheet('fame', this)">⭐<span>Fame</span></button>
-    <button class="nav-btn" onclick="openSheet('secret', this)">📖<span>Secret</span></button>
+    <button class="nav-btn" onclick="openSecretScreen(this)">📖<span>Secret</span></button>
     <button class="nav-btn" onclick="openSheet('gift', this)">🎁<span>Gift</span></button>
     <button class="nav-btn" onclick="openSheet('shop', this)">🛒<span>Shop</span></button>
   </div>
@@ -3786,10 +3964,10 @@
       { name: "Coffee Beans", emoji: "🫘", chain: "drink", level: 1, img: "assets/items/coffee_line/01_coffee_beans.png" },
       { name: "Coffee", emoji: "☕", chain: "drink", level: 2, img: "assets/items/coffee_line/02_coffee.png" },
       { name: "Latte", emoji: "🥤", chain: "drink", level: 3, img: "assets/items/coffee_line/03_latte.png" },
-      { name: "Fancy Drink", emoji: "🍹", chain: "drink", level: 4, img: "assets/items/coffee_line/04_fancy_drink.png" },
+      { name: "Iced Coffee", emoji: "🧊", chain: "drink", level: 4, img: "assets/items/coffee_line/07_iced_coffee.png" },
       { name: "Mocha Mug", emoji: "🍫", chain: "drink", level: 5, img: "assets/items/coffee_line/05_mocha_mug.png" },
       { name: "Caramel Latte", emoji: "🍮", chain: "drink", level: 6, img: "assets/items/coffee_line/06_caramel_latte.png" },
-      { name: "Iced Coffee", emoji: "🧊", chain: "drink", level: 7, img: "assets/items/coffee_line/07_iced_coffee.png" },
+      { name: "Fancy Drink", emoji: "🍹", chain: "drink", level: 7, img: "assets/items/coffee_line/04_fancy_drink.png" },
       { name: "Iced Mocha", emoji: "🥤", chain: "drink", level: 8, img: "assets/items/coffee_line/08_iced_mocha.png" },
       { name: "Affogato Float", emoji: "🍨", chain: "drink", level: 9, img: "assets/items/coffee_line/09_affogato_float.png" },
 
@@ -5835,29 +6013,23 @@
     }
 
     function getMergeDropPool() {
+      // Fixed 8-item mixed pool. It can include locked/unopened chains so the game is not too easy,
+      // but the pool stays small enough for real matches to happen.
+      const fixed = [
+        getChainIndexByLevel("drink", 1),
+        getChainIndexByLevel("drink", 2),
+        getChainIndexByLevel("dessert", 1),
+        getChainIndexByLevel("dessert", 2),
+        getChainIndexByLevel("bakery", 1),
+        getChainIndexByLevel("tea", 1),
+        getChainIndexByLevel("juice", 1),
+        getChainIndexByLevel("ice", 1)
+      ].filter(i => i !== null && i !== undefined && items[i]);
       const pool = [];
-      const add = (chain, maxLevel, copies = 1) => {
-        if (!isChainAvailable(chain)) return;
-        const max = Math.min(discoveredLevel[chain] || 1, maxLevel, getChainLength(chain));
-        for (let lvl = 1; lvl <= max; lvl++) {
-          const idx = getChainIndexByLevel(chain, lvl);
-          for (let c = 0; c < copies; c++) pool.push(idx);
-        }
-      };
-
-      add("drink", 3, 3);
-      add("dessert", 3, 3);
-      add("bakery", 2, 2);
-      add("tea", 2, 2);
-      add("juice", 2, 2);
-      add("ice", 2, 2);
-
-      const unique = [...new Set(pool)];
-      if (unique.length > 8) {
-        const keep = new Set(unique.slice(0, 8));
-        return pool.filter(i => keep.has(i));
-      }
-      return pool.length ? pool : [getChainIndexByLevel("drink", 1), getChainIndexByLevel("drink", 2), getChainIndexByLevel("dessert", 1), getChainIndexByLevel("dessert", 2)];
+      fixed.forEach(i => {
+        pool.push(i, i, i);
+      });
+      return pool.length ? pool : [getChainIndexByLevel("drink", 1), getChainIndexByLevel("dessert", 1)];
     }
 
     function randomMergeDropItem() {
@@ -6832,6 +7004,174 @@
         if (document.getElementById("sheet").classList.contains("show")) refreshOpenSheet();
       }
     };
+
+
+
+    /* PATCH 147: Secret Recipe real full-screen mode + fixed selection/merge */
+    function ensureSecretScreen() {
+      let screen = document.getElementById("secretScreen");
+      if (screen) return screen;
+      screen = document.createElement("div");
+      screen.id = "secretScreen";
+      screen.className = "secret-screen";
+      document.body.appendChild(screen);
+      return screen;
+    }
+
+    function openSecretScreen(btn) {
+      closeSheet();
+      document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+      const screen = ensureSecretScreen();
+      screen.classList.add("show");
+      renderSecretScreen();
+      setMsg("Secret Recipe opened.");
+    }
+
+    function closeSecretScreen() {
+      const screen = ensureSecretScreen();
+      screen.classList.remove("show");
+      document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+      const first = document.querySelector(".bottom-nav .nav-btn");
+      if (first) first.classList.add("active");
+    }
+
+    function refreshSecretScreen() {
+      const screen = document.getElementById("secretScreen");
+      if (screen && screen.classList.contains("show")) renderSecretScreen();
+    }
+
+    function normalizeSecretRecipe() {
+      if (!secretRecipe || typeof secretRecipe !== "object") secretRecipe = { moves: 0, selected: null, maxReached: 1, board: secretDefaultBoard() };
+      secretRecipe.moves = Math.max(0, Number(secretRecipe.moves) || 0);
+      secretRecipe.maxReached = Math.max(1, Math.min(12, Number(secretRecipe.maxReached) || 1));
+      if (!Array.isArray(secretRecipe.board) || secretRecipe.board.length !== SECRET_BOARD_SIZE) {
+        secretRecipe.board = secretDefaultBoard();
+      }
+      secretRecipe.board = secretRecipe.board.map((x) => {
+        if (!x) return null;
+        const lvl = Math.max(1, Math.min(12, Number(x.level) || 1));
+        return { level: lvl, locked: !!x.locked };
+      });
+      if (secretRecipe.selected !== null && secretRecipe.selected !== undefined) {
+        const sel = Number(secretRecipe.selected);
+        if (!Number.isInteger(sel) || sel < 0 || sel >= SECRET_BOARD_SIZE || !secretRecipe.board[sel] || secretRecipe.board[sel].locked) {
+          secretRecipe.selected = null;
+        } else {
+          secretRecipe.selected = sel;
+        }
+      } else {
+        secretRecipe.selected = null;
+      }
+    }
+
+    function renderSecretScreen() {
+      normalizeSecretRecipe();
+      const screen = ensureSecretScreen();
+      const best = secretRecipe.maxReached || 1;
+      const progress = SECRET_LEVELS.map((x, idx) => `<div class="secret-step ${idx + 1 <= best ? "done" : ""}"><div>${x.icon}</div><div>Lv.${idx + 1}</div></div>`).join("");
+      const boardHtml = secretRecipe.board.map((cell, idx) => {
+        if (!cell) return `<button class="secret-cell empty" onclick="secretCellClick(${idx})"><span style="font-size:15px;opacity:.58">+</span></button>`;
+        const def = SECRET_LEVELS[cell.level - 1] || SECRET_LEVELS[0];
+        return `<button class="secret-cell ${cell.locked ? "locked" : ""} ${secretRecipe.selected === idx ? "selected" : ""}" onclick="secretCellClick(${idx})">
+          <span class="secret-icon">${def.icon}</span>
+          ${cell.locked ? `<span class="secret-vines">🌿</span>` : ""}
+          <span class="secret-lvl">Lv.${cell.level}</span>
+        </button>`;
+      }).join("");
+
+      screen.innerHTML = `
+        <div class="secret-screen-inner">
+          <div class="secret-full-top">
+            <button class="secret-back-btn" onclick="closeSecretScreen()">←</button>
+            <div class="secret-full-title">📖 Secret Recipe</div>
+            <div class="secret-full-moves">🧩 ${secretRecipe.moves}</div>
+          </div>
+          <div class="secret-full-card">
+            <div class="secret-progress">${progress}</div>
+            <div class="secret-full-note">Only the bottom row starts open. Tap an open item, then tap an empty cell or the same level item to merge. Locked vine items open only with the same open level.</div>
+          </div>
+          <div class="secret-full-card">
+            <div class="secret-full-board">${boardHtml}</div>
+            <div class="secret-full-actions">
+              <button class="green-btn" onclick="secretSpawnItem(); refreshSecretScreen();">Use 1 Move</button>
+              <button class="orange-btn" onclick="secretRecipe.selected=null; saveSecretRecipe(); refreshSecretScreen();">Cancel Select</button>
+            </div>
+            <div class="secret-full-note">Lv.6+ merges give coin + energy. Lv.9+ also gives gems. Lv.10-12 must be created by the player.</div>
+          </div>
+        </div>`;
+    }
+
+    function secretCellClick(idx) {
+      normalizeSecretRecipe();
+      const cell = secretRecipe.board[idx];
+
+      if (!cell) {
+        if (secretRecipe.selected !== null && secretRecipe.selected !== undefined) {
+          const from = secretRecipe.selected;
+          const moving = secretRecipe.board[from];
+          if (moving && !moving.locked) {
+            secretRecipe.board[idx] = moving;
+            secretRecipe.board[from] = null;
+            secretRecipe.selected = idx;
+            saveSecretRecipe();
+            refreshSecretScreen();
+            return;
+          }
+        }
+        secretSpawnItem();
+        refreshSecretScreen();
+        return;
+      }
+
+      if (secretRecipe.selected === null || secretRecipe.selected === undefined) {
+        if (cell.locked) { setMsg("Select an open same-level item, then tap this vine item."); playSound("error"); return; }
+        secretRecipe.selected = idx;
+        saveSecretRecipe();
+        refreshSecretScreen();
+        return;
+      }
+
+      const from = secretRecipe.selected;
+      if (from === idx) {
+        secretRecipe.selected = null;
+        saveSecretRecipe();
+        refreshSecretScreen();
+        return;
+      }
+
+      const a = secretRecipe.board[from];
+      const b = secretRecipe.board[idx];
+      if (!a || !b || a.level !== b.level || (a.locked && b.locked) || a.level >= 12) {
+        setMsg("Secret Recipe needs two same-level items. One can be locked.");
+        playSound("error");
+        secretRecipe.selected = null;
+        saveSecretRecipe();
+        refreshSecretScreen();
+        return;
+      }
+
+      const newLevel = Math.min(12, a.level + 1);
+      const target = b.locked ? idx : from;
+      const remove = target === idx ? from : idx;
+      secretRecipe.board[target] = { level: newLevel, locked: false };
+      secretRecipe.board[remove] = null;
+      secretRecipe.selected = target;
+      secretRecipe.maxReached = Math.max(secretRecipe.maxReached, newLevel);
+      setMsg("Secret Recipe Lv." + newLevel + " created!");
+      playSound("merge");
+      grantSecretReward(newLevel);
+      saveSecretRecipe();
+      updateAll();
+      refreshSecretScreen();
+    }
+
+    const __mmcPatch147AddSecretMoves = addSecretMoves;
+    addSecretMoves = function(n) {
+      __mmcPatch147AddSecretMoves(n);
+      refreshSecretScreen();
+    };
+
 
     document.addEventListener("dragstart", e => e.preventDefault());
 
