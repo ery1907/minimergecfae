@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Mini Merge Cafe</title>
-  <!-- MINI_MERGE_UI_FIX_V3_PATCH_153_ASSET_UI_SECRET_FIX -->
-  <!-- MINI_MERGE_UI_FIX_V3_PATCH_148 -->
+  <!-- MINI_MERGE_UI_FIX_V3_PATCH_151_SECRET_LOCK_CLEAR_FIX -->
 
   <style>
     * {
@@ -4088,6 +4087,132 @@
       .shop-wallet-pill { font-size: 11px; padding: 7px 2px; }
     }
 
+
+
+    /* PATCH 150: machine repair / broke system */
+    .machine-broken {
+      filter: grayscale(.25) saturate(.8);
+      box-shadow: 0 0 0 3px rgba(230,57,70,.22), 0 6px 12px rgba(90,56,37,.20) !important;
+    }
+
+    .machine-repair-badge {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      min-width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 900;
+      color: #fff;
+      border: 2px solid #fff;
+      z-index: 9;
+      box-shadow: 0 3px 8px rgba(0,0,0,.18);
+      pointer-events: none;
+    }
+
+    .machine-repair-badge.broken { background: #e63946; }
+    .machine-repair-badge.soon { background: #ff9f1c; }
+
+    .repair-box {
+      background: linear-gradient(180deg,#fffaf4,#ffe8cf);
+      border: 2px solid #f1c27d;
+      border-radius: 22px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .repair-machine-img .info-machine-img {
+      width: 120px !important;
+      height: 90px !important;
+      margin: 0 auto 8px !important;
+    }
+
+    .repair-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: #653719;
+      margin-bottom: 6px;
+    }
+
+    .repair-text {
+      font-size: 13px;
+      font-weight: 800;
+      color: #7a4c2b;
+      line-height: 1.35;
+      margin-bottom: 10px;
+    }
+
+    .repair-cost-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 110px;
+      background: #fff;
+      border: 2px solid #f1d3a5;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 14px;
+      font-weight: 900;
+      color: #6b4126;
+      margin-bottom: 10px;
+    }
+
+    .cable-game {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .cable-col {
+      background: rgba(255,255,255,.7);
+      border: 2px solid #f1d3a5;
+      border-radius: 18px;
+      padding: 8px;
+    }
+
+    .cable-col-title {
+      font-size: 11px;
+      font-weight: 900;
+      color: #8b5e34;
+      margin-bottom: 6px;
+    }
+
+    .cable-btn {
+      width: 100%;
+      height: 34px;
+      border-radius: 13px;
+      margin: 4px 0;
+      background: linear-gradient(180deg,#ffffff,#fff1d9);
+      border: 2px solid #f1c27d;
+      color: #5a3825;
+      font-size: 17px;
+      box-shadow: 0 3px 8px rgba(90,56,37,.08);
+    }
+
+    .cable-btn.selected {
+      outline: 3px solid #ffb703;
+      background: #fff8d9;
+    }
+
+    .cable-btn.done {
+      background: linear-gradient(180deg,#e9ffe1,#baf0a8);
+      border-color: #62ba4c;
+      opacity: .75;
+    }
+
+    .repair-status {
+      min-height: 18px;
+      font-size: 12px;
+      font-weight: 900;
+      color: #6b4126;
+      margin-top: 4px;
+    }
+
   </style>
 </head>
 
@@ -7404,13 +7529,37 @@
       return b;
     };
 
+    function ensureSecretClearedLocked() {
+      if (!secretRecipe || typeof secretRecipe !== "object") return [];
+      if (!Array.isArray(secretRecipe.clearedLocked)) secretRecipe.clearedLocked = [];
+      secretRecipe.clearedLocked = secretRecipe.clearedLocked
+        .map(Number)
+        .filter(i => Number.isInteger(i) && i >= 0 && i < SECRET_BOARD_SIZE);
+      return secretRecipe.clearedLocked;
+    }
+
+    function markSecretLockedCleared(idx) {
+      const cleared = ensureSecretClearedLocked();
+      if (!cleared.includes(idx)) cleared.push(idx);
+    }
+
+    function isSecretLockedCleared(idx) {
+      return ensureSecretClearedLocked().includes(idx);
+    }
+
     function applySecretLockedPattern() {
       if (!secretRecipe || !Array.isArray(secretRecipe.board)) return;
+      ensureSecretClearedLocked();
+
+      // PATCH 152 CRITICAL:
+      // Kapalı Secret Recipe kareleri sadece başlangıç engelidir.
+      // Oyun başladıktan sonra normalize/render sırasında eksik kapalı kareler ASLA tekrar doldurulmaz.
+      // Böylece açık Lv4 + kapalı Lv4 = açık Lv5 olduktan sonra Lv5 başka yere taşınırsa
+      // eski hedef kare boş kalır; kapalı Lv4 geri gelmez.
       for (let i = 0; i < SECRET_BOARD_SIZE; i++) {
         const current = secretRecipe.board[i];
-        const pattern = secretPatternCellAt(i);
-        if (!current || current.locked) {
-          secretRecipe.board[i] = pattern ? { level: pattern.level, locked: true } : null;
+        if (isSecretLockedCleared(i) && current && current.locked) {
+          secretRecipe.board[i] = null;
         }
       }
     }
@@ -7422,6 +7571,7 @@
 
       secretRecipe.moves = Math.max(0, Number(secretRecipe.moves) || 0);
       secretRecipe.maxReached = Math.max(1, Math.min(12, Number(secretRecipe.maxReached) || 1));
+      ensureSecretClearedLocked();
 
       if (!Array.isArray(secretRecipe.board) || secretRecipe.board.length !== SECRET_BOARD_SIZE) {
         secretRecipe.board = secretDefaultBoard();
@@ -7736,565 +7886,367 @@
     };
 
 
-    /* PATCH 153: asset-based UI cleanup */
-    const MMC_ASSETS = {
-      app: {
-        goals: "assets/items/app_icons_set/goals.png",
-        fame: "assets/items/app_icons_set/fame.png",
-        secret: "assets/items/app_icons_set/secret.png",
-        gift: "assets/items/app_icons_set/gift.png",
-        shop: "assets/items/app_icons_set/shop.png",
-        research: "assets/items/app_icons_set/research.png",
-        machineUpgrade: "assets/items/app_icons_set/machine_upgrade.png",
-        gem: "assets/items/app_icons_set/gem.png"
-      },
-      game: {
-        information: "assets/items/game_icons/information.png",
-        recycle: "assets/items/game_icons/recycle.png",
-        hint: "assets/items/game_icons/hint.png",
-        mergeCat: "assets/items/game_icons/merge_cat.png",
-        coin: "assets/items/game_icons/coin.png",
-        puzzleMove: "assets/items/game_icons/puzzle_move.png",
-        fameStar: "assets/items/game_icons/fame_star.png",
-        machineUpgradePart: "assets/items/game_icons/machine_upgrade_part.png",
-        energy: "assets/items/game_icons/energy.png"
-      },
-      secretBg: "assets/items/secretbackground.png",
-      secret(level, locked=false){
-        return locked
-          ? `assets/items/secret_recipe_locked_final_12/secret_locked_${level}.png`
-          : `assets/items/secret_recipe_12_final/secret_${level}.png`;
-      }
+
+
+    /* PATCH 150: Machine Broke + Coin Repair + Cable Mini Game + Secret locked merge bug fix */
+    const MACHINE_REPAIR_LIMITS = { drink: 60, dessert: 60, bakery: 70, tea: 70, juice: 75, ice: 80 };
+    const MACHINE_REPAIR_COSTS = { drink: 120, dessert: 120, bakery: 180, tea: 200, juice: 240, ice: 280 };
+    let machineRepair = {
+      drink: { uses: 0, broken: false },
+      dessert: { uses: 0, broken: false },
+      bakery: { uses: 0, broken: false },
+      tea: { uses: 0, broken: false },
+      juice: { uses: 0, broken: false },
+      ice: { uses: 0, broken: false }
     };
+    let repairGame = null;
 
-    (function injectAssetPatchStyles(){
-      const style = document.createElement("style");
-      style.textContent = `
-        .ui-inline-icon,.ui-stat-icon,.ui-btn-icon,.ui-sheet-icon,.ui-nav-icon,.ui-secret-move-icon{display:inline-block;vertical-align:middle;line-height:0;flex:0 0 auto}
-        .ui-inline-icon img,.ui-stat-icon img,.ui-btn-icon img,.ui-sheet-icon img,.ui-nav-icon img,.ui-secret-move-icon img{display:block;width:100%;height:100%;object-fit:contain}
-        .gear,.helper,.hint-info-btn,.hint-recycle-btn,.bulb{display:flex;align-items:center;justify-content:center}
-        .gear .ui-btn-icon,.helper .ui-btn-icon,.hint-info-btn .ui-btn-icon,.hint-recycle-btn .ui-btn-icon,.bulb .ui-btn-icon{width:26px;height:26px}
-        .stats .stat-pill{display:flex;align-items:center;justify-content:center;gap:7px}
-        .stats .stat-pill .ui-stat-icon{width:22px;height:22px}
-        .bottom-nav .nav-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
-        .bottom-nav .nav-btn .ui-nav-icon{width:27px;height:27px}
-        .sheet-header h2.asset-title{display:flex;align-items:center;gap:8px}
-        .sheet-header h2.asset-title .ui-sheet-icon{width:26px;height:26px}
-        .reward-icon-line{display:flex;align-items:center;justify-content:center;gap:4px;font-weight:900}
-        .reward-icon-line .ui-inline-icon{width:14px;height:14px}
-        .shop-icon .ui-inline-icon{width:38px;height:38px}
-        .shop-wallet-pill .ui-inline-icon{width:22px;height:22px;margin:0 auto 3px}
-        .shop-section-title .ui-inline-icon{width:20px;height:20px;margin-right:6px}
-        .machine-upgrade-shop-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-        .machine-upgrade-card .shop-desc{min-height:38px}
-        .machine-level-mini{font-size:11px;font-weight:900;color:#80522f}
-        .secret-full-top .title-with-icon,.secret-full-moves{display:flex;align-items:center;gap:8px}
-        .secret-full-top .title-with-icon .ui-sheet-icon{width:24px;height:24px}
-        .secret-full-top .secret-full-moves .ui-secret-move-icon{width:22px;height:22px}
-        .secret-progress{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
-        .secret-step{padding:6px;border-radius:14px;background:rgba(255,250,244,.88);border:2px solid #efd6aa;text-align:center}
-        .secret-step.done{border-color:#c79f58;box-shadow:0 4px 8px rgba(90,56,37,.12)}
-        .secret-step .secret-progress-icon{width:34px;height:34px;margin:0 auto 4px}
-        .secret-full-board{background-image:url('assets/items/secretbackground.png');background-size:cover;background-position:center;border:none;padding:18px 16px 22px;gap:6px;box-shadow:none}
-        .secret-full-board .secret-cell{background:transparent !important;border:none !important;box-shadow:none !important;padding:0;overflow:visible}
-        .secret-full-board .secret-cell.empty{background:rgba(255,255,255,.08) !important;border-radius:10px !important}
-        .secret-full-board .secret-cell.selected{outline:3px solid rgba(255,187,74,.75) !important;border-radius:14px !important}
-        .secret-art-icon{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:8px}
-        .secret-art-icon img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(0,0,0,.18))}
-        .secret-full-board .secret-vines,.secret-full-board .secret-lvl{display:none !important}
-        .secret-empty-plus{font-size:18px;opacity:.28;font-weight:900;color:#8a6847}
-        .shop-card .info-machine-img{width:78px !important;height:54px !important}
-        .shop-card .ui-inline-icon img{width:100%;height:100%;object-fit:contain}
-        .shop-section-title{display:flex;align-items:center}
-      `;
-      document.head.appendChild(style);
-    })();
-
-    function mmcIcon(src, cls, alt="") {
-      return `<span class="${cls}"><img src="${src}" alt="${alt}" draggable="false"></span>`;
-    }
-    function mmcGameIcon(key, extra="ui-inline-icon", alt="") { return mmcIcon(MMC_ASSETS.game[key], extra, alt || key); }
-    function mmcAppIcon(key, extra="ui-inline-icon", alt="") { return mmcIcon(MMC_ASSETS.app[key], extra, alt || key); }
-    function mmcSecretIcon(level, locked=false, cls="secret-art-icon") { return `<span class="${cls}"><img src="${MMC_ASSETS.secret(level, locked)}" alt="Secret ${level}" draggable="false"></span>`; }
-
-    const secretNames = [
-      "Recipe Notebook","Old Recipe Note","Sealed Envelope","Blueprint Scroll","Ink & Quill","Magnifier",
-      "Checklist Pad","Potted Herb","Desk Lamp","Recipe Chest","Locked Recipe Book","Master Recipe Book"
-    ];
-    SECRET_LEVELS.forEach((it, idx) => {
-      it.name = secretNames[idx] || it.name;
-      it.icon = "";
-      it.img = MMC_ASSETS.secret(idx + 1, false);
-      it.lockedImg = MMC_ASSETS.secret(idx + 1, true);
-    });
-
-    function mmcSecretPatternCellAt(idx) {
-      const r = Math.floor(idx / SECRET_COLS);
-      const c = idx % SECRET_COLS;
-      if (r === 0) return { level: 8, locked: true };
-      if (r === 1) return { level: 6, locked: true };
-      if (r === 2) return { level: 4, locked: true };
-      if (r === 3) {
-        if (c === 3 || c === 4) return null;
-        return { level: 4, locked: true };
-      }
-      return null;
+    function defaultMachineRepairState() {
+      return {
+        drink: { uses: 0, broken: false },
+        dessert: { uses: 0, broken: false },
+        bakery: { uses: 0, broken: false },
+        tea: { uses: 0, broken: false },
+        juice: { uses: 0, broken: false },
+        ice: { uses: 0, broken: false }
+      };
     }
 
-    secretDefaultBoard = function() {
-      const out = Array(SECRET_BOARD_SIZE).fill(null);
-      for (let i = 0; i < SECRET_BOARD_SIZE; i++) {
-        const pat = mmcSecretPatternCellAt(i);
-        out[i] = pat ? { level: pat.level, locked: true } : null;
-      }
-      return out;
-    };
-
-    normalizeSecretRecipe = function() {
-      if (!secretRecipe || typeof secretRecipe !== "object") {
-        secretRecipe = { moves: 0, selected: null, maxReached: 1, board: secretDefaultBoard(), clearedLocked: [] };
-      }
-      secretRecipe.moves = Math.max(0, Number(secretRecipe.moves) || 0);
-      secretRecipe.maxReached = Math.max(1, Math.min(12, Number(secretRecipe.maxReached) || 1));
-      secretRecipe.clearedLocked = Array.isArray(secretRecipe.clearedLocked) ? secretRecipe.clearedLocked.map(Number).filter(Number.isInteger) : [];
-      const clearedSet = new Set(secretRecipe.clearedLocked);
-
-      if (!Array.isArray(secretRecipe.board) || secretRecipe.board.length !== SECRET_BOARD_SIZE) {
-        secretRecipe.board = secretDefaultBoard();
-      }
-
-      secretRecipe.board = secretRecipe.board.map((x, idx) => {
-        if (!x) {
-          const pat = mmcSecretPatternCellAt(idx);
-          if (pat && !clearedSet.has(idx)) return { level: pat.level, locked: true };
-          return null;
-        }
-        const lvl = Math.max(1, Math.min(12, Number(x.level) || 1));
-        const locked = !!x.locked;
-        if (locked && clearedSet.has(idx)) return null;
-        return { level: lvl, locked };
+    function ensureMachineRepairState() {
+      const base = defaultMachineRepairState();
+      Object.keys(base).forEach(type => {
+        const cur = machineRepair && machineRepair[type] ? machineRepair[type] : {};
+        const limit = MACHINE_REPAIR_LIMITS[type] || 60;
+        base[type] = {
+          uses: Math.max(0, Math.min(limit, Number(cur.uses) || 0)),
+          broken: !!cur.broken
+        };
+        if (base[type].uses >= limit) base[type].broken = true;
       });
-
-      for (let i = 0; i < SECRET_BOARD_SIZE; i++) {
-        const pat = mmcSecretPatternCellAt(i);
-        if (!secretRecipe.board[i] && pat && !clearedSet.has(i)) secretRecipe.board[i] = { level: pat.level, locked: true };
-        if (secretRecipe.board[i] && secretRecipe.board[i].locked && !pat) secretRecipe.board[i] = null;
-      }
-
-      if (secretRecipe.selected !== null && secretRecipe.selected !== undefined) {
-        const sel = Number(secretRecipe.selected);
-        if (!Number.isInteger(sel) || sel < 0 || sel >= SECRET_BOARD_SIZE || !secretRecipe.board[sel] || secretRecipe.board[sel].locked) {
-          secretRecipe.selected = null;
-        } else {
-          secretRecipe.selected = sel;
-        }
-      } else {
-        secretRecipe.selected = null;
-      }
-    };
-
-    function mmcMarkClearedLocked(idx) {
-      const pat = mmcSecretPatternCellAt(idx);
-      if (!pat) return;
-      if (!Array.isArray(secretRecipe.clearedLocked)) secretRecipe.clearedLocked = [];
-      if (!secretRecipe.clearedLocked.includes(idx)) secretRecipe.clearedLocked.push(idx);
+      machineRepair = base;
     }
 
-    function mmcSecretMoveOrMerge(from, to) {
+    function isMachineBroken(type) {
+      ensureMachineRepairState();
+      return !!(machineRepair[type] && machineRepair[type].broken);
+    }
+
+    function isMachineRepairSoon(type) {
+      ensureMachineRepairState();
+      const state = machineRepair[type];
+      const limit = MACHINE_REPAIR_LIMITS[type] || 60;
+      return !!state && !state.broken && state.uses >= limit - 10;
+    }
+
+    function machineUsesLeft(type) {
+      ensureMachineRepairState();
+      const state = machineRepair[type] || { uses: 0 };
+      const limit = MACHINE_REPAIR_LIMITS[type] || 60;
+      return Math.max(0, limit - state.uses);
+    }
+
+    function repairCost(type) {
+      return MACHINE_REPAIR_COSTS[type] || 150;
+    }
+
+    const __mmcV150SaveGame = saveGame;
+    saveGame = function() {
+      ensureMachineRepairState();
+      __mmcV150SaveGame();
+      try {
+        const data = JSON.parse(localStorage.getItem(SAVE_KEY) || "{}");
+        data.version = Math.max(Number(data.version) || 0, 7);
+        data.machineRepair = cloneSimple(machineRepair);
+        localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+      } catch(e) {}
+    };
+
+    const __mmcV150LoadGame = loadGame;
+    loadGame = function() {
+      const ok = __mmcV150LoadGame();
+      if (ok) {
+        try {
+          const data = JSON.parse(localStorage.getItem(SAVE_KEY) || "{}");
+          if (data.machineRepair) machineRepair = data.machineRepair;
+        } catch(e) {}
+      }
+      ensureMachineRepairState();
+      return ok;
+    };
+
+    const __mmcV150StartNewGame = startNewGame;
+    startNewGame = function() {
+      __mmcV150StartNewGame();
+      machineRepair = defaultMachineRepairState();
+      ensureMachineRepairState();
+      saveGame();
+    };
+
+    const __mmcV150CreateBoard = createBoard;
+    createBoard = function() {
+      ensureMachineRepairState();
+      __mmcV150CreateBoard();
+      if (!boardEl) return;
+      Array.from(boardEl.children).forEach((cell, idx) => {
+        const data = board[idx];
+        if (!data || !data.machine) return;
+        const type = data.machine;
+        if (isMachineBroken(type)) {
+          cell.classList.add("machine-broken");
+          const badge = document.createElement("div");
+          badge.className = "machine-repair-badge broken";
+          badge.textContent = "⚠️";
+          cell.appendChild(badge);
+        } else if (isMachineRepairSoon(type)) {
+          const badge = document.createElement("div");
+          badge.className = "machine-repair-badge soon";
+          badge.textContent = "🔧";
+          cell.appendChild(badge);
+        }
+      });
+    };
+
+    const __mmcV150HandleBoardTap = handleBoardTap;
+    handleBoardTap = function(index) {
+      const data = board[index];
+      if (data && data.machine && isMachineBroken(data.machine)) {
+        selectedIndex = null;
+        createBoard();
+        openMachineRepair(data.machine);
+        return;
+      }
+      __mmcV150HandleBoardTap(index);
+    };
+
+    const __mmcV150GenerateItem = generateItem;
+    generateItem = function(type) {
+      ensureMachineRepairState();
+      if (isMachineBroken(type)) {
+        openMachineRepair(type);
+        return;
+      }
+
+      const beforeEnergy = energy;
+      const beforeEmpty = board.filter(x => x === null).length;
+      __mmcV150GenerateItem(type);
+
+      const produced = energy < beforeEnergy && board.filter(x => x === null).length < beforeEmpty;
+      if (!produced) return;
+
+      const state = machineRepair[type];
+      const limit = MACHINE_REPAIR_LIMITS[type] || 60;
+      state.uses = Math.min(limit, state.uses + 1);
+
+      if (state.uses >= limit) {
+        state.broken = true;
+        setMsg(machineDefs[type].name + " broke! Repair it with coins to produce again.");
+        showGameModal("⚠️", "Machine Broke!", machineDefs[type].name, `Repair cost: ${repairCost(type)} 🪙<br>Tap the machine to fix the cable.`);
+      } else if (state.uses === limit - 10) {
+        setMsg(machineDefs[type].name + " needs maintenance soon. " + machineUsesLeft(type) + " uses left.");
+      }
+      saveGame();
+      createBoard();
+    };
+
+    function openMachineRepair(type) {
+      ensureMachineRepairState();
+      const def = machineDefs[type];
+      if (!def) return;
+      const cost = repairCost(type);
+      const status = isMachineBroken(type) ? "This machine stopped producing. Pay coins, then connect the cables." : `${machineUsesLeft(type)} uses left before repair.`;
+      document.getElementById("modalIcon").textContent = isMachineBroken(type) ? "⚠️" : "🔧";
+      document.getElementById("modalTitle").textContent = isMachineBroken(type) ? "Repair Needed" : "Machine Status";
+      document.getElementById("modalName").innerHTML = def.name;
+      document.getElementById("modalReward").innerHTML = `
+        <div class="repair-box">
+          <div class="repair-machine-img">${machineImageHTML(type, "info-machine-img")}</div>
+          <div class="repair-title">${def.name}</div>
+          <div class="repair-text">${status}</div>
+          <div class="repair-cost-pill">🪙 ${cost}</div>
+          ${isMachineBroken(type) ? `<button class="orange-btn" onclick="startCableRepair('${type}')" ${coins < cost ? "disabled" : ""}>Pay & Fix Cable</button>` : `<button class="green-btn" onclick="closeGameModal()">Looks Good</button>`}
+          ${coins < cost && isMachineBroken(type) ? `<div class="repair-status">Not enough coins. Other machines still work.</div>` : `<div class="repair-status">${isMachineBroken(type) ? "Connect all matching cables to finish repair." : ""}</div>`}
+        </div>`;
+      document.getElementById("gameModal").classList.add("show");
+    }
+
+    function startCableRepair(type) {
+      const cost = repairCost(type);
+      if (!isMachineBroken(type)) { closeGameModal(); return; }
+      if (coins < cost) {
+        setMsg("Need " + cost + " coins to repair.");
+        playSound("error");
+        openMachineRepair(type);
+        return;
+      }
+      coins -= cost;
+      repairGame = {
+        type,
+        selected: null,
+        done: {},
+        left: ["red", "blue", "green", "yellow"],
+        right: shuffleRepairColors(["red", "blue", "green", "yellow"])
+      };
+      renderCableRepairGame();
+      updateAll();
+      saveGame();
+    }
+
+    function shuffleRepairColors(arr) {
+      const copy = arr.slice();
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function cableIcon(color) {
+      return { red: "🔴", blue: "🔵", green: "🟢", yellow: "🟡" }[color] || "⚪";
+    }
+
+    function renderCableRepairGame(msg = "Select a cable, then tap the matching socket.") {
+      if (!repairGame) return;
+      const type = repairGame.type;
+      const def = machineDefs[type];
+      const left = repairGame.left.map(color => `<button class="cable-btn ${repairGame.selected === color ? "selected" : ""} ${repairGame.done[color] ? "done" : ""}" onclick="repairPickCable('left','${color}')" ${repairGame.done[color] ? "disabled" : ""}>${cableIcon(color)}</button>`).join("");
+      const right = repairGame.right.map(color => `<button class="cable-btn ${repairGame.done[color] ? "done" : ""}" onclick="repairPickCable('right','${color}')" ${repairGame.done[color] ? "disabled" : ""}>${cableIcon(color)}</button>`).join("");
+      document.getElementById("modalIcon").textContent = "🔌";
+      document.getElementById("modalTitle").textContent = "Connect the Cable";
+      document.getElementById("modalName").innerHTML = def.name;
+      document.getElementById("modalReward").innerHTML = `
+        <div class="repair-box">
+          <div class="repair-text">Match all cables to restart the machine.</div>
+          <div class="cable-game">
+            <div class="cable-col"><div class="cable-col-title">Cables</div>${left}</div>
+            <div class="cable-col"><div class="cable-col-title">Sockets</div>${right}</div>
+          </div>
+          <div class="repair-status">${msg}</div>
+        </div>`;
+      document.getElementById("gameModal").classList.add("show");
+    }
+
+    function repairPickCable(side, color) {
+      if (!repairGame || repairGame.done[color]) return;
+      if (side === "left") {
+        repairGame.selected = color;
+        renderCableRepairGame("Now tap the matching socket.");
+        return;
+      }
+      if (!repairGame.selected) {
+        renderCableRepairGame("Choose a cable first.");
+        playSound("error");
+        return;
+      }
+      if (repairGame.selected !== color) {
+        repairGame.selected = null;
+        renderCableRepairGame("Wrong socket. Try again.");
+        playSound("error");
+        return;
+      }
+      repairGame.done[color] = true;
+      repairGame.selected = null;
+      playSound("upgrade");
+      const doneCount = Object.keys(repairGame.done).length;
+      if (doneCount >= 4) {
+        finishMachineRepair(repairGame.type);
+      } else {
+        renderCableRepairGame("Good! " + doneCount + "/4 connected.");
+      }
+    }
+
+    function finishMachineRepair(type) {
+      ensureMachineRepairState();
+      machineRepair[type] = { uses: 0, broken: false };
+      repairGame = null;
+      saveGame();
+      updateAll();
+      createBoard();
+      showGameModal("✅", "Machine Fixed!", machineDefs[type].name, "Cable connected. This machine can produce again.");
+      setMsg(machineDefs[type].name + " repaired!");
+    }
+
+    function secretMergeIntoTarget(from, to) {
       normalizeSecretRecipe();
-      const moving = secretRecipe.board[from];
-      const target = secretRecipe.board[to];
-
-      if (!moving || moving.locked) return false;
-
       if (from === to) {
         secretRecipe.selected = from;
         saveSecretRecipe();
         refreshSecretScreen();
-        return true;
+        return;
       }
-
+      const moving = secretRecipe.board[from];
+      const target = secretRecipe.board[to];
+      if (!moving || moving.locked) {
+        refreshSecretScreen();
+        return;
+      }
       if (!target) {
         secretRecipe.board[to] = moving;
         secretRecipe.board[from] = null;
         secretRecipe.selected = to;
         saveSecretRecipe();
         refreshSecretScreen();
-        return true;
-      }
-
-      if (moving.level !== target.level || moving.level >= 12) {
-        playSound("error");
-        setMsg("Secret Recipe needs two same-level items.");
-        return false;
-      }
-
-      const newLevel = Math.min(12, moving.level + 1);
-      if (target.locked) mmcMarkClearedLocked(to);
-
-      secretRecipe.board[to] = { level: newLevel, locked: false };
-      secretRecipe.board[from] = null;
-      secretRecipe.selected = to;
-      secretRecipe.maxReached = Math.max(secretRecipe.maxReached, newLevel);
-
-      setMsg(secretNames[newLevel - 1] + " created!");
-      playSound("merge");
-      grantSecretReward(newLevel);
-      saveSecretRecipe();
-      updateAll();
-      refreshSecretScreen();
-      return true;
-    }
-
-    secretDropItem = function(from, to) { mmcSecretMoveOrMerge(from, to); };
-
-    secretCellClick = function(idx) {
-      normalizeSecretRecipe();
-      const cell = secretRecipe.board[idx];
-      const selected = secretRecipe.selected;
-
-      if (selected === null) {
-        if (cell && !cell.locked) secretRecipe.selected = idx;
-        saveSecretRecipe();
-        refreshSecretScreen();
         return;
       }
-
-      if (selected === idx) {
+      if (moving.level !== target.level || moving.level >= 12 || (moving.locked && target.locked)) {
+        setMsg("Secret Recipe needs two same-level items. One can be locked.");
+        playSound("error");
         secretRecipe.selected = null;
         saveSecretRecipe();
         refreshSecretScreen();
         return;
       }
+      const newLevel = Math.min(12, moving.level + 1);
+      const targetWasLocked = !!target.locked;
+      // Kapalı vine kare sadece hareket etmesin diye kilitlidir.
+      // Aynı level açık item ile birleşince kilit tamamen temizlenir ve kare artık normal boş/taşınabilir kare olur.
+      if (targetWasLocked) markSecretLockedCleared(to);
+      secretRecipe.board[to] = { level: newLevel, locked: false };
+      secretRecipe.board[from] = null;
+      secretRecipe.selected = to;
+      secretRecipe.maxReached = Math.max(secretRecipe.maxReached, newLevel);
+      setMsg("Secret Recipe Lv." + newLevel + " created!");
+      playSound("merge");
+      grantSecretReward(newLevel);
+      saveSecretRecipe();
+      updateAll();
+      refreshSecretScreen();
+    }
 
-      const fromCell = secretRecipe.board[selected];
-      if (!fromCell || fromCell.locked) {
-        secretRecipe.selected = cell && !cell.locked ? idx : null;
-        saveSecretRecipe();
+    secretDropItem = function(from, to) {
+      secretMergeIntoTarget(from, to);
+    };
+
+    secretCellClick = function(idx) {
+      normalizeSecretRecipe();
+      const cell = secretRecipe.board[idx];
+      if (!cell) {
+        if (secretRecipe.selected !== null && secretRecipe.selected !== undefined) {
+          secretMergeIntoTarget(secretRecipe.selected, idx);
+          return;
+        }
+        secretSpawnItem();
         refreshSecretScreen();
         return;
       }
-
-      if (!cell) {
-        secretRecipe.board[idx] = fromCell;
-        secretRecipe.board[selected] = null;
+      if (secretRecipe.selected === null || secretRecipe.selected === undefined) {
+        if (cell.locked) {
+          setMsg("Select an open same-level item, then tap this vine item.");
+          playSound("error");
+          return;
+        }
         secretRecipe.selected = idx;
         saveSecretRecipe();
         refreshSecretScreen();
         return;
       }
-
-      if (cell.locked || (!cell.locked && cell.level === fromCell.level)) {
-        if (mmcSecretMoveOrMerge(selected, idx)) return;
+      const from = secretRecipe.selected;
+      if (from === idx) {
+        secretRecipe.selected = null;
+        saveSecretRecipe();
+        refreshSecretScreen();
+        return;
       }
-
-      secretRecipe.selected = cell && !cell.locked ? idx : null;
-      saveSecretRecipe();
-      refreshSecretScreen();
-    };
-
-    function mmcSecretProgressStep(level, done) {
-      return `<div class="secret-step ${done ? "done" : ""}">${mmcSecretIcon(level, false, "secret-progress-icon")}<div>${level}</div></div>`;
-    }
-
-    renderSecretScreen = function() {
-      normalizeSecretRecipe();
-      const screen = ensureSecretScreen();
-      const best = secretRecipe.maxReached || 1;
-      const progress = Array.from({length:12}, (_,i) => mmcSecretProgressStep(i + 1, i + 1 <= best)).join("");
-      const boardHtml = secretRecipe.board.map((cell, idx) => {
-        if (!cell) {
-          return `<button class="secret-cell empty" type="button" data-secret-index="${idx}" onpointerdown="secretPointerDown(event, ${idx})"><span class="secret-empty-plus">+</span></button>`;
-        }
-        return `<button class="secret-cell ${cell.locked ? "locked" : ""} ${secretRecipe.selected === idx ? "selected" : ""}" type="button" data-secret-index="${idx}" onpointerdown="secretPointerDown(event, ${idx})">${mmcSecretIcon(cell.level, !!cell.locked)}</button>`;
-      }).join("");
-
-      screen.innerHTML = `
-        <div class="secret-screen-inner">
-          <div class="secret-full-top">
-            <button class="secret-back-btn" onclick="closeSecretScreen()">←</button>
-            <div class="title-with-icon">${mmcAppIcon("secret","ui-sheet-icon","Secret")}<span>Secret Recipe</span></div>
-            <div class="secret-full-moves">${mmcGameIcon("puzzleMove","ui-secret-move-icon","Moves")}<span>${secretRecipe.moves}</span></div>
-          </div>
-          <div class="secret-full-card">
-            <div class="secret-progress">${progress}</div>
-            <div class="secret-full-note"><b>Tap or drag:</b> Move items freely. Merge matching items on locked tiles to clear them permanently.</div>
-          </div>
-          <div class="secret-full-card">
-            <div class="secret-full-board">${boardHtml}</div>
-            <div class="secret-full-actions">
-              <button class="green-btn" onclick="secretSpawnItem(); refreshSecretScreen();">Use 1 Move</button>
-            </div>
-            <div class="secret-full-note">Bottom 3 rows are open. Locked rows now stay cleared after you merge on them.</div>
-          </div>
-        </div>`;
-    };
-
-    secretPointerMove = function(e) {
-      if (!secretDragState) return;
-      e.preventDefault();
-      const dx = e.clientX - secretDragState.startX;
-      const dy = e.clientY - secretDragState.startY;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (!secretDragState.active || dist < 8) return;
-      secretDragState.moved = true;
-
-      if (!secretDragState.ghost) {
-        const cell = secretRecipe.board[secretDragState.idx];
-        const ghost = document.createElement("div");
-        ghost.className = "secret-drag-ghost";
-        ghost.innerHTML = cell ? mmcSecretIcon(cell.level, !!cell.locked) : "";
-        document.body.appendChild(ghost);
-        secretDragState.ghost = ghost;
-      }
-
-      secretDragState.ghost.style.left = e.clientX + "px";
-      secretDragState.ghost.style.top = e.clientY + "px";
-
-      document.querySelectorAll(".secret-cell.secret-drop-hover").forEach(el => el.classList.remove("secret-drop-hover"));
-      const target = document.elementFromPoint(e.clientX, e.clientY);
-      const btn = target ? target.closest(".secret-cell") : null;
-      if (btn && btn.dataset && btn.dataset.secretIndex !== undefined) btn.classList.add("secret-drop-hover");
-    };
-
-    function mmcRewardLine(iconKey, text, cls="") {
-      return `<span class="reward-icon-line ${cls}">${mmcGameIcon(iconKey)}<span>${text}</span></span>`;
-    }
-
-    createCustomers = function() {
-      const previousFirstId = customers[0] && customers[0].profile ? customers[0].profile.id : "";
-      customers.sort((a, b) => Number(isCustomerReady(b)) - Number(isCustomerReady(a)));
-      const newFirstId = customers[0] && customers[0].profile ? customers[0].profile.id : "";
-      customersEl.innerHTML = "";
-
-      customers.forEach((c, index) => {
-        const ready = isCustomerReady(c);
-        const moves = secretOrderMoveReward(c);
-        const rewardParts = [
-          mmcRewardLine("coin", String(getCustomerReward(c))),
-          mmcRewardLine("fameStar", "+" + getCustomerFameReward(c))
-        ];
-        if (c.givesPart) rewardParts.push(mmcRewardLine("machineUpgradePart", "+1"));
-        if (moves > 0) rewardParts.push(mmcRewardLine("puzzleMove", "+" + moves, "secret-move-reward"));
-
-        const card = document.createElement("div");
-        card.className = "customer-card" + (ready ? " ready" : "") + (c.orders.length > 1 ? " multi-order" : " single-order");
-        card.innerHTML = `
-          ${ready ? `<div class="ready-check">✓</div>` : ""}
-          <div class="customer-top">
-            <div class="portrait-ring"><img src="${c.profile.portrait}" alt="${c.profile.name}" draggable="false"></div>
-            <div class="customer-meta"><div class="customer-name">${c.profile.name}</div></div>
-          </div>
-          <div class="order-block">
-            <div class="order-emoji">${orderEmojiText(c.orders)}</div>
-            <div class="order-name">${orderNameText(c.orders)}</div>
-          </div>
-          <div class="reward reward-grid">${rewardParts.join("")}</div>
-          <button class="serve-btn" ${ready ? `onclick="serveCustomer(${index})"` : "disabled"}>Serve</button>
-        `;
-        customersEl.appendChild(card);
-      });
-
-      if (newFirstId && newFirstId !== previousFirstId && isCustomerReady(customers[0])) {
-        requestAnimationFrame(() => customersEl.scrollTo({ left: 0, behavior: "smooth" }));
-      }
-    };
-
-    function mmcShopCard(iconHtml, name, desc, buttonText, buttonClass, onclick, disabled) {
-      return `<div class="shop-card ${disabled ? "locked" : ""}"><div class="shop-icon">${iconHtml}</div><div class="shop-name">${name}</div><div class="shop-desc">${desc}</div><button class="shop-buy-btn ${buttonClass}" onclick="${onclick}; refreshOpenSheet();" ${disabled ? "disabled" : ""}>${buttonText}</button></div>`;
-    }
-
-    function mmcMachineUpgradeCard(type) {
-      if (!unlockedMachines[type]) return "";
-      const def = machineDefs[type];
-      const lvl = machineLevels[type];
-      const chain = machineDefs[type].chain;
-      const maxed = lvl >= getChainLength(chain);
-      const cost = upgradeCost(type);
-
-      return `<div class="shop-card machine-upgrade-card ${maxed ? "owned" : ""}">
-        <div class="shop-icon">${machineImageHTML(type, "info-machine-img")}</div>
-        <div class="shop-name">${def.name}</div>
-        <div class="shop-desc"><div class="machine-level-mini">Level ${lvl}</div><div>${maxed ? "Maximum level reached." : "Upgrade moved from Info to Shop."}</div></div>
-        <button class="shop-buy-btn shop-buy-blue" onclick="upgradeMachine('${type}'); refreshOpenSheet();" ${maxed || parts < cost ? "disabled" : ""}>${maxed ? "Max Level" : cost + " Parts"}</button>
-      </div>`;
-    }
-
-    function mmcMachineOfferCard(type) {
-      const def = machineDefs[type];
-      if (unlockedMachines[type]) {
-        return `<div class="shop-card owned"><div class="shop-icon">${machineImageHTML(type, "info-machine-img")}</div><div class="shop-name">${def.name}</div><div class="shop-desc">Owned and ready on board.</div><button class="shop-buy-btn shop-buy-green" disabled>Owned</button></div>`;
-      }
-      const rankOk = fameRank >= def.unlockRank;
-      const gemOk = gems >= def.cost;
-      const disabled = !(rankOk && gemOk);
-      const need = rankOk ? `${def.cost} Gems` : fameRanks[def.unlockRank].name;
-      return `<div class="shop-card ${disabled ? "locked" : ""}"><div class="shop-icon">${machineImageHTML(type, "info-machine-img")}</div><div class="shop-name">${def.name}</div><div class="shop-desc">Requires: ${need}</div><button class="shop-buy-btn shop-buy-orange" onclick="unlockMachine('${type}'); refreshOpenSheet();" ${disabled ? "disabled" : ""}>Unlock</button></div>`;
-    }
-
-    renderShopPanel = function() {
-      return `
-        <div class="shop-app">
-          <div class="shop-wallet">
-            <div class="shop-wallet-title">Cafe Shop</div>
-            <div class="shop-wallet-row">
-              <div class="shop-wallet-pill">${mmcGameIcon("coin")}<br>${coins}</div>
-              <div class="shop-wallet-pill">${mmcAppIcon("gem")}<br>${gems}</div>
-              <div class="shop-wallet-pill">${mmcGameIcon("machineUpgradePart")}<br>${parts}</div>
-              <div class="shop-wallet-pill">${mmcGameIcon("energy")}<br>${energy}/${maxEnergy}</div>
-            </div>
-          </div>
-
-          <div class="shop-section">
-            <div class="shop-section-head"><div class="shop-section-title">${mmcGameIcon("energy")}<span>Energy</span></div><div class="shop-section-sub">Keep playing</div></div>
-            <div class="shop-grid">
-              ${mmcShopCard(mmcGameIcon("energy"), "+10 Energy", "Small refill for short play.", "6 Gems", "shop-buy-green", "buyEnergyWithGems(10, 6)", gems < 6 || energy >= maxEnergy)}
-              ${mmcShopCard(mmcGameIcon("energy"), "+25 Energy", "Better refill value.", "14 Gems", "shop-buy-green", "buyEnergyWithGems(25, 14)", gems < 14 || energy >= maxEnergy)}
-            </div>
-          </div>
-
-          <div class="shop-section">
-            <div class="shop-section-head"><div class="shop-section-title">${mmcGameIcon("coin")}<span>Coins</span></div><div class="shop-section-sub">Boost stock</div></div>
-            <div class="shop-grid">
-              ${mmcShopCard(mmcGameIcon("coin"), "+150 Coins", "Quick coin boost.", "8 Gems", "shop-buy-orange", "buyCoinsWithGems(150, 8)", gems < 8)}
-              ${mmcShopCard(mmcGameIcon("coin"), "+500 Coins", "Best coin pack.", "22 Gems", "shop-buy-orange", "buyCoinsWithGems(500, 22)", gems < 22)}
-            </div>
-          </div>
-
-          <div class="shop-section">
-            <div class="shop-section-head"><div class="shop-section-title">${mmcGameIcon("machineUpgradePart")}<span>Machine Parts</span></div><div class="shop-section-sub">Upgrade material</div></div>
-            <div class="shop-grid">
-              ${mmcShopCard(mmcGameIcon("machineUpgradePart"), "+3 Parts", "For early upgrades.", "10 Gems", "shop-buy-purple", "buyPartsWithGems(3, 10)", gems < 10)}
-              ${mmcShopCard(mmcGameIcon("machineUpgradePart"), "+8 Parts", "Upgrade pack.", "24 Gems", "shop-buy-purple", "buyPartsWithGems(8, 24)", gems < 24)}
-            </div>
-          </div>
-
-          <div class="shop-section">
-            <div class="shop-section-head"><div class="shop-section-title">${mmcAppIcon("machineUpgrade")}<span>Machine Upgrades</span></div><div class="shop-section-sub">Moved from Info</div></div>
-            <div class="machine-upgrade-shop-grid">
-              ${["drink","dessert","bakery","tea","juice","ice"].map(mmcMachineUpgradeCard).join("")}
-            </div>
-          </div>
-
-          <div class="shop-section">
-            <div class="shop-section-head"><div class="shop-section-title">${mmcAppIcon("shop")}<span>Machines</span></div><div class="shop-section-sub">New item chains</div></div>
-            <div class="shop-grid">
-              ${mmcMachineOfferCard("bakery")}
-              ${mmcMachineOfferCard("tea")}
-              ${mmcMachineOfferCard("juice")}
-              ${mmcMachineOfferCard("ice")}
-            </div>
-          </div>
-
-          <div class="shop-section">
-            <div class="shop-section-head"><div class="shop-section-title">${mmcAppIcon("gem")}<span>Testing</span></div><div class="shop-section-sub">Prototype only</div></div>
-            <div class="shop-grid">
-              ${mmcShopCard(mmcAppIcon("gem"), "+25 Gems", "Prototype test pack.", "Free", "shop-buy-blue", "prototypeBuyGems()", false)}
-            </div>
-          </div>
-        </div>`;
-    };
-
-    const __mmcRenderInfoPanelOriginal = renderInfoPanel;
-    renderInfoPanel = function() {
-      if (selectedIndex !== null && board[selectedIndex] && board[selectedIndex].machine) {
-        const data = board[selectedIndex];
-        const type = data.machine;
-        const def = machineDefs[type];
-        const lvl = machineLevels[type];
-        const chain = machineDefs[type].chain;
-        const production = getChainItems(chain).slice(0, Math.min(lvl, discoveredLevel[chain], getChainLength(chain)));
-
-        return `
-          <div class="info-visual-card">
-            <div class="info-main-visual">${machineImageHTML(type, "info-machine-img")}</div>
-            <div class="info-title-big">${def.name}</div>
-            <div class="info-chain-row">${production.map(i => `<div class="info-chain-step">${itemImageTag(i)}<span>${items[i].name}</span></div>`).join("")}</div>
-            <div class="info-mini-grid">
-              <div class="info-mini-pill">Level ${lvl}</div>
-              <div class="info-mini-pill">Upgrade moved to Shop</div>
-              <div class="info-mini-pill">Tap twice to produce</div>
-              <div class="info-mini-pill">Drag to move</div>
-            </div>
-          </div>`;
-      }
-      return __mmcRenderInfoPanelOriginal();
-    };
-
-    const __mmcRenderFamePanelOriginal = renderFamePanel;
-    renderFamePanel = function() {
-      let html = __mmcRenderFamePanelOriginal();
-      html = html.replace("<h3>Research Lab</h3>", `<h3 style="display:flex;align-items:center;gap:8px;">${mmcAppIcon("research","ui-inline-icon","Research")}<span>Research Lab</span></h3>`);
-      html = html.replace("<h3>🏆 Fame Road</h3>", `<h3 style="display:flex;align-items:center;gap:8px;">${mmcAppIcon("fame","ui-inline-icon","Fame")}<span>Fame Road</span></h3>`);
-      return html;
-    };
-
-    const __mmcRefreshOpenSheetOriginal = refreshOpenSheet;
-    refreshOpenSheet = function() {
-      __mmcRefreshOpenSheetOriginal();
-      const sheet = document.getElementById("sheet");
-      const type = sheet.dataset.type || "goals";
-      const title = document.getElementById("sheetTitle");
-      title.classList.add("asset-title");
-      const titleMap = {
-        goals: [MMC_ASSETS.app.goals, "Goals"],
-        fame: [MMC_ASSETS.app.fame, "Cafe Fame"],
-        gift: [MMC_ASSETS.app.gift, "Gift"],
-        shop: [MMC_ASSETS.app.shop, "Shop"],
-        info: [MMC_ASSETS.game.information, "Info"],
-        minigame: [MMC_ASSETS.game.puzzleMove, "Merge Drop"]
-      };
-      if (titleMap[type]) {
-        title.innerHTML = `${mmcIcon(titleMap[type][0], "ui-sheet-icon", titleMap[type][1])}<span>${titleMap[type][1]}</span>`;
-      }
-    };
-
-    function mmcPatchStaticButtons() {
-      const nav = document.querySelectorAll(".bottom-nav .nav-btn");
-      const navData = [
-        ["goals","Goals"], ["fame","Fame"], ["secret","Secret"], ["gift","Gift"], ["shop","Shop"]
-      ];
-      nav.forEach((btn, idx) => {
-        if (navData[idx]) btn.innerHTML = `${mmcAppIcon(navData[idx][0], "ui-nav-icon", navData[idx][1])}<span>${navData[idx][1]}</span>`;
-      });
-
-      const gear = document.querySelector(".gear");
-      if (gear) gear.innerHTML = mmcGameIcon("information", "ui-btn-icon", "Info");
-
-      const helper = document.querySelector(".helper");
-      if (helper) helper.innerHTML = mmcGameIcon("mergeCat", "ui-btn-icon", "Merge Cat");
-
-      const hintInfo = document.querySelector(".hint-info-btn");
-      if (hintInfo) hintInfo.innerHTML = mmcGameIcon("information", "ui-btn-icon", "Info");
-
-      const recycle = document.querySelector(".hint-recycle-btn");
-      if (recycle) recycle.innerHTML = mmcGameIcon("recycle", "ui-btn-icon", "Recycle");
-
-      const bulb = document.querySelector(".bulb");
-      if (bulb) bulb.innerHTML = mmcGameIcon("hint", "ui-btn-icon", "Hint");
-    }
-
-    function mmcPatchTopStats() {
-      const c = document.getElementById("coinsText");
-      if (c) c.innerHTML = `${mmcGameIcon("coin","ui-stat-icon","Coin")}<span>${coins}</span>`;
-
-      const g = document.getElementById("gemsText");
-      if (g) g.innerHTML = `${mmcAppIcon("gem","ui-stat-icon","Gems")}<span>${gems}</span>`;
-
-      const prt = document.getElementById("partsText");
-      if (prt) prt.innerHTML = `${mmcGameIcon("machineUpgradePart","ui-stat-icon","Parts")}<span>${parts}</span>`;
-
-      const e = document.getElementById("energyText");
-      if (e) e.innerHTML = `${mmcGameIcon("energy","ui-stat-icon","Energy")}<span>${energy}/${maxEnergy}</span>`;
-    }
-
-    const __mmcUpdateAllOriginal = updateAll;
-    updateAll = function() {
-      __mmcUpdateAllOriginal();
-      mmcPatchTopStats();
-      mmcPatchStaticButtons();
-      const sheet = document.getElementById("sheet");
-      if (sheet && sheet.classList.contains("show")) refreshOpenSheet();
+      secretMergeIntoTarget(from, idx);
     };
 
 
