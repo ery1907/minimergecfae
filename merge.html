@@ -7761,8 +7761,8 @@
         mergeCat: "assets/items/game_icons/merge_cat.png"
       },
       board: {
-        main: "game_board_vector_transparent.png",
-        secret: "game_board_secret_recipe_transparent.png"
+        main: "assets/items/backgrounds/game_board_vector_transparent.png",
+        secret: "assets/items/backgrounds/game_board_secret_recipe_transparent.png"
       },
       secret(level, locked=false) {
         return locked
@@ -7791,7 +7791,7 @@
         .sheet-header h2.asset-title{display:flex;align-items:center;gap:8px}
 
         .board-frame.mmc-board-art{
-          background-image:url("game_board_vector_transparent.png") !important;
+          background-image:url("assets/items/backgrounds/game_board_vector_transparent.png") !important;
           background-size:100% 100% !important;
           background-position:center !important;
           background-repeat:no-repeat !important;
@@ -7879,7 +7879,7 @@
         }
         .secret-progress-dot.done{background:linear-gradient(180deg,#69d84c,#3ba927);border-color:#348e28}
         .secret-full-board.mmc-secret-board-art{
-          background-image:url("game_board_secret_recipe_transparent.png") !important;
+          background-image:url("assets/items/backgrounds/game_board_secret_recipe_transparent.png") !important;
           background-size:100% 100% !important;
           background-position:center !important;
           background-repeat:no-repeat !important;
@@ -8457,12 +8457,12 @@
     };
 
 
-    /* PATCH 161: new board background files + transparent playable grid alignment */
+    /* PATCH 163: fixed board background paths for assets/items folder */
     (function patch161BoardBackgrounds(){
       const style = document.createElement("style");
       style.textContent = `
         .board-frame.mmc-board-art{
-          background-image:url("game_board_vector_transparent.png") !important;
+          background-image:url("assets/items/backgrounds/game_board_vector_transparent.png") !important;
           background-size:100% 100% !important;
           background-position:center !important;
           background-repeat:no-repeat !important;
@@ -8526,7 +8526,7 @@
           z-index:5;
         }
         .secret-full-board.mmc-secret-board-art{
-          background-image:url("game_board_secret_recipe_transparent.png") !important;
+          background-image:url("assets/items/backgrounds/game_board_secret_recipe_transparent.png") !important;
           background-size:100% 100% !important;
           background-position:center !important;
           background-repeat:no-repeat !important;
